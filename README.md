@@ -26,15 +26,13 @@ A React Server Side rendered application (isomorphic) with support fetch data li
 note: for windows user please install `win-node-env` for supporting NODE_ENV.
 
 ## How to use
-git clone this project.
+1- git clone this project.
 
-remove `.git` folder.
+2- remove `.git` folder.
 
-`yarn install` || `npm install`
+3- `yarn install` || `npm install`
 
-and
-
-`yarn start` || `npm run start`
+4- `yarn start` || `npm run start`
 
 now start coding !!
 
@@ -53,7 +51,7 @@ note: Suggest using [`pm2`](http://pm2.keymetrics.io/)
 you can see example in `screens/Projects.jsx`
 
 #### Steps:
-1- add a `static async getInitialData` to component. example: 
+1- add a `static async getInitialData` to a route component. example: 
 ```
 static async getInitialData({ match, req, res }) {
     const api = await axios.get('https://jsonplaceholder.typicode.com/users');
@@ -64,9 +62,14 @@ static async getInitialData({ match, req, res }) {
 
 note: we use axios because support node.js and browser.
 
-2- export your component with `withSSR` component in `components/withSSR.jsx`.
+2- now you can access your fetched data as `initialData` component props;
 
-3- now you can access your fetched data as `initialData` component props;
+## getInitialData parameters:
+- match (matched route, both on server and client)
+- req (request object ExpressJs, only server)
+- res (response object ExpressJs, only server)
+- history (react router history, only client)
+- location (react router location, only client)
 
 ## How to manage `head`
 you can use `react-helmet` like before in your components. 
