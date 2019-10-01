@@ -53,7 +53,7 @@ you can see example in `screens/Projects.jsx`
 #### Steps:
 1- add a `static async getInitialData` to a route component. example: 
 ```
-static async getInitialData({ match, req, res }) {
+static async getInitialData({ match, req, res, history, location }) {
     const api = await axios.get('https://jsonplaceholder.typicode.com/users');
 
     return { ...api.data };
