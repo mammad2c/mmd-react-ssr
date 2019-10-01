@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import withSSR from '../components/withSSR';
 
 class Projects extends React.Component {
   static async getInitialData({ match, req, res }) {
@@ -14,4 +13,4 @@ class Projects extends React.Component {
   }
 }
 
-export default withSSR(Projects);
+export default Projects;

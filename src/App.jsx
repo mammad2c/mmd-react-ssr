@@ -2,6 +2,7 @@ import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import './styles/App.scss';
+import withSSR from './components/withSSR';
 
 const App = ({ routes, initialData }) => {
   return routes ? (
@@ -21,7 +22,7 @@ const App = ({ routes, initialData }) => {
               path={routeItem.path}
               exact={routeItem.exact}
               render={props =>
-                React.createElement(routeItem.component, {
+                React.createElement(withSSR(routeItem.component), {
                   ...props,
                   initialData: initialData[index] || null
                 })
