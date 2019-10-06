@@ -20,7 +20,7 @@ app.disable('x-powered-by');
 
 app.get('/*', (req, res) => {
   const matches = routes.map(route => {
-    const match = matchPath(req.url, route.path, route);
+    const match = matchPath(req.path, route.path, route);
     // We then look for static getInitialData function on each top level component
     if (match) {
       const obj = {
