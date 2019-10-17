@@ -29,7 +29,7 @@ export default function withSSR(Page) {
 
     componentDidMount() {
       const { data } = this.state;
-      if (!data) {
+      if (!data && Page.getInitialData) {
         this.fetchData();
       }
     }
