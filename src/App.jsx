@@ -24,7 +24,7 @@ const App = ({ routes, initialData }) => {
               render={props =>
                 React.createElement(withSSR(routeItem.component), {
                   ...props,
-                  initialData: initialData[index] || null
+                  initialData: (initialData && initialData[index]) || null
                 })
               }
             />
