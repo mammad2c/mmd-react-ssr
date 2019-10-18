@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 // This make debugging easier. Components will show as SSR(MyComponent) in
 // react-dev-tools.
