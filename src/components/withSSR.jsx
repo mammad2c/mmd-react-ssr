@@ -76,7 +76,7 @@ export default function withSSR(Page) {
       return (
         <Page
           {...rest}
-          refetch={this.fetchData}
+          reFetch={this.fetchData}
           isLoading={isLoading}
           initialData={data}
         />

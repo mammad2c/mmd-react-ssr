@@ -1,3 +1,5 @@
+const path = require('path');
+
 const isProduction = process.env.NODE_ENV === 'production';
 
 const imageRegex = /\.(png|jpe?g|gif|bmp)$/;
@@ -48,7 +50,12 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.jsx', '.js']
+    extensions: ['.jsx', '.js'],
+    alias: {
+      'webpack/hot/poll': require.resolve('webpack/hot/poll'),
+      'react-dom': '@hot-loader/react-dom'
+    },
+    modules: [path.join(__dirname, '../src'), 'node_modules']
   },
   stats: 'errors-only'
 };

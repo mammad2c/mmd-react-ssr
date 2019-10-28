@@ -33,14 +33,17 @@ module.exports = merge(common, {
   entry: isProduction
     ? entry
     : [
-        ...entry,
+        'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:3001',
-        'webpack/hot/only-dev-server'
+        'webpack/hot/only-dev-server',
+        ...entry
       ],
   output: {
     path: path.resolve(__dirname, '../build/'),
     filename: `static/js/${isProduction ? 'bundle.[hash:8].js' : 'bundle.js'}`,
-    chunkFilename: 'static/js/[id].[hash:8].chunk.js',
+    chunkFilename: `static/js/${
+      isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
+    }`,
     pathinfo: true,
     publicPath: isProduction ? '' : 'http://localhost:3001/'
   },
@@ -66,21 +69,13 @@ module.exports = merge(common, {
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: !isProduction,
-              sassOptions: { importLoaders: 2 }
+              sassOptions: { importLoaders: 2 },
+              sourceMap: !isProduction
             }
           }
         ]
       }
     ]
-  },
-  resolve: {
-    alias: isProduction
-      ? {}
-      : {
-          'webpack/hot/poll': require.resolve('webpack/hot/poll'),
-          'react-dom': '@hot-loader/react-dom'
-        }
   },
   optimization: {
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
@@ -96,7 +91,9 @@ module.exports = merge(common, {
       ]
     : [
         ...plugins,
-        new webpack.HotModuleReplacementPlugin(),
+        new webpack.HotModuleReplacementPlugin({
+          multiStep: true
+        }),
         new webpackUtils.WebpackAfterBuildPlugin(() => {
           if (!firstBuildClient) {
             shell.exec('yarn run dev:server', {
@@ -110,7 +107,7 @@ module.exports = merge(common, {
     ? {}
     : {
         disableHostCheck: true,
-        clientLogLevel: 'none',
+        clientLogLevel: 'trace',
         compress: true,
         headers: {
           'Access-Control-Allow-Origin': '*'
@@ -123,7 +120,6 @@ module.exports = merge(common, {
         noInfo: true,
         overlay: true,
         port: 3001,
-        quiet: true,
         watchOptions: {
           ignored: /node_modules/
         }

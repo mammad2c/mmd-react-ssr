@@ -24,10 +24,16 @@ const plugins = [
 
 module.exports = merge(common, {
   name: 'server',
-  entry: isProduction ? entry : [...entry, 'webpack/hot/poll?1000'],
+  entry,
   externals: [
     nodeExternals({
-      whitelist: [!isProduction && 'webpack/hot/poll?1000']
+      whitelist: [
+        isProduction ? null : 'webpack/hot/poll?300',
+        /\.(eot|woff|woff2|ttf|otf)$/,
+        /\.(svg|png|jpg|jpeg|gif|ico)$/,
+        /\.(mp4|mp3|ogg|swf|webp)$/,
+        /\.(css|scss|sass|sss|less)$/
+      ].filter(x => x)
     })
   ],
   output: {

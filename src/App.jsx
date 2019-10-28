@@ -1,12 +1,23 @@
 import { hot } from 'react-hot-loader/root';
+import { setConfig } from 'react-hot-loader';
 import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
-import './styles/App.scss';
+import Helmet from 'react-helmet';
 import withSSR from './components/withSSR';
+
+// base SASS file
+import './styles/App.scss';
+
+setConfig({
+  trackTailUpdates: false
+});
 
 const App = ({ routes, initialData }) => {
   return routes ? (
     <div>
+      <Helmet>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Helmet>
       <header className="site-header">
         <NavLink to="/" exact>
           Home
