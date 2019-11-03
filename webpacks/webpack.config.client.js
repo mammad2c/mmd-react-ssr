@@ -4,7 +4,7 @@ const shell = require('shelljs');
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserJSPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const merge = require('webpack-merge');
 const webpackUtils = require('./webpack.utils');
@@ -78,7 +78,15 @@ module.exports = merge(common, {
     ]
   },
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+    minimize: true,
+    minimizer: [
+      new TerserPlugin(webpackUtils.terserPluginOptions),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorPluginOptions: {
+          preset: ['default', { discardComments: { removeAll: true } }]
+        }
+      })
+    ]
   },
   plugins: isProduction
     ? [

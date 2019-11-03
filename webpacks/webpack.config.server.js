@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 const WebpackBar = require('webpackbar');
 const shell = require('shelljs');
 const webpack = require('webpack');
-const TerserJSPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.common');
 const webpackUtils = require('./webpack.utils');
@@ -68,7 +68,7 @@ module.exports = merge(common, {
     ]
   },
   optimization: {
-    minimizer: [new TerserJSPlugin({})]
+    minimizer: [new TerserPlugin(webpackUtils.terserPluginOptions)]
   },
   plugins: isProduction
     ? plugins
