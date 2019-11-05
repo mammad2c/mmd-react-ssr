@@ -77,7 +77,7 @@ static async getInitialData({ match, req, res, history, location }) {
 
 note: we use axios because support node.js and browser.
 
-2- now you can access your fetched data as `initialData` component props;
+3- now you can access your fetched data as `initialData` component props;
 
 ## getInitialData parameters:
 
