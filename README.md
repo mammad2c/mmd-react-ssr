@@ -56,8 +56,16 @@ note: Suggest using [`pm2`](http://pm2.keymetrics.io/)
 you can see example in `screens/Projects.jsx`
 
 #### Steps:
+1- in `routes.js` wrap the route component you want to have SSR by `withSSR` HOC. example: 
+```
+{
+    path: '/projects',
+    exact: true,
+    component: withSSR(Projects)
+}
+```
 
-1- add a `static async getInitialData` to a route component. example:
+2- add a `static async getInitialData` to the wrapped route component. example:
 
 ```
 static async getInitialData({ match, req, res, history, location }) {
