@@ -1,6 +1,10 @@
+// Route components
 import Home from './screens/Home';
 import About from './screens/About';
 import Projects from './screens/Projects';
+
+// SSR HOC
+import withSSR from './components/withSSR';
 
 export default [
   {
@@ -16,6 +20,6 @@ export default [
   {
     path: '/projects',
     exact: true,
-    component: Projects
+    component: withSSR(Projects)
   }
 ];

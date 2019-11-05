@@ -3,7 +3,6 @@ import { setConfig } from 'react-hot-loader';
 import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import withSSR from './components/withSSR';
 
 // base SASS file
 import './styles/App.scss';
@@ -33,7 +32,7 @@ const App = ({ routes, initialData }) => {
               path={routeItem.path}
               exact={routeItem.exact}
               render={props =>
-                React.createElement(withSSR(routeItem.component), {
+                React.createElement(routeItem.component, {
                   ...props,
                   initialData: (initialData && initialData[index]) || null
                 })
