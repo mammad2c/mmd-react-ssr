@@ -1,13 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 const About = ({ match, req, res, history, location, initialData }) => {
-  useEffect(() => {
-    if (!initialData) {
-      About.getInitialData(match, req, res, history, location);
-    }
-  }, []);
-
   return (
     <div className="about">
       <h1>About</h1>
