@@ -1,20 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 
-class Projects extends React.Component {
-  static async getInitialData({ match, req, res, history, location }) {
-    const api = await axios.get('https://jsonplaceholder.typicode.com/users');
+const Projects = ({ initialData }) => {
+  return (
+    <div>
+      <h1>Projects</h1>
+    </div>
+  );
+};
 
-    return { ...api.data };
-  }
+Projects.getInitialData = async ({ match, req, res, history, location }) => {
+  const api = await axios.get('https://jsonplaceholder.typicode.com/users');
 
-  render() {
-    return (
-      <div>
-        <h1>Projects</h1>
-      </div>
-    );
-  }
-}
+  return { ...api.data };
+};
 
 export default Projects;

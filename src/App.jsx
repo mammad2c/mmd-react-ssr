@@ -1,22 +1,12 @@
-import { hot } from 'react-hot-loader/root';
-import { setConfig } from 'react-hot-loader';
 import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
-import Helmet from 'react-helmet';
 
 // base SASS file
 import './styles/App.scss';
 
-setConfig({
-  trackTailUpdates: false
-});
-
 const App = ({ routes, initialData }) => {
-  return routes ? (
+  return (
     <div>
-      <Helmet>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Helmet>
       <header className="site-header">
         <NavLink to="/" exact>
           Home
@@ -42,7 +32,7 @@ const App = ({ routes, initialData }) => {
         </Switch>
       </main>
     </div>
-  ) : null;
+  );
 };
 
-export default hot(App);
+export default App;

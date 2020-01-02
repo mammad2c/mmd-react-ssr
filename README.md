@@ -1,10 +1,12 @@
 # mmd-react-ssr
 
-A React Server Side rendered application (isomorphic) with support fetch data like Next.js using React Router
+A React Server Side rendered application template (isomorphic) with support fetch data like Next.js using React Router
 
 🔥 Using React Router.
 
 🔥 Support Hot Reloading!!!
+
+🔥 Code splitting by [`loadable-components`](https://loadable-components.com/), recommended solution by [`React Team`](https://reactjs.org/docs/code-splitting.html#reactlazy)
 
 🔥 Code validation with `eslint` and `airbnb`.
 
@@ -12,7 +14,7 @@ A React Server Side rendered application (isomorphic) with support fetch data li
 
 🔥 Style validation and formatter with `stylelint`.
 
-🔥 Unit testing with `Jest` and `react-testing-library`.
+🔥 Unit testing with `jest` and `react-testing-library`.
 
 🔥 Support `postCSS`.
 
@@ -22,10 +24,8 @@ A React Server Side rendered application (isomorphic) with support fetch data li
 
 ## Requirements
 
-- NodeJs v10 above
+- `NodeJs` v10 above
 - `yarn`
-
-note: for windows user please install `win-node-env` for supporting NODE_ENV.
 
 ## How to use
 
@@ -43,7 +43,7 @@ you can see in `http://localhost:3000`.
 
 ## Production and Deployment
 
-1- Run `yarn build` or `npm run build`. It will create a `build` folder ready for Deployment.
+1- Run `yarn build` or `npm run build`. a `build` folder will be created that ready for deployment.
 
 2- Now serve the `build` folder with `NodeJs`.
 
@@ -53,26 +53,30 @@ note: Suggest using [`pm2`](http://pm2.keymetrics.io/)
 
 ## How to fetch data ssr
 
-you can see example in `screens/Projects.jsx`
+All route components with a `static property` called `getInitialData` can fetch data on `server` and pass down data as props called `initialData`.
+you can see examples in `screens/Projects.jsx` or `screens/About.jsx`.
 
 #### Steps:
-1- in `routes.js` wrap the route component you want to have SSR by `withSSR` HOC. example: 
+2- add a `static async getInitialData` to the a route component:
+
+- after component definition:
 ```
-{
-    path: '/projects',
-    exact: true,
-    component: withSSR(Projects)
+Component.getInitialData = async ({ match, req, res, history, location }) {
+    const api = await axios.get('https://jsonplaceholder.typicode.com/users');
+
+    return { ...api.data };
 }
 ```
 
-2- add a `static async getInitialData` to the wrapped route component. example:
-
+- or during component definition:
 ```
-static async getInitialData({ match, req, res, history, location }) {
+const Component = () => {
+  static async getInitialData({ match, req, res, history, location }) {
     const api = await axios.get('https://jsonplaceholder.typicode.com/users');
 
     return { ...api.data };
   }
+}
 ```
 
 note: we use axios because support node.js and browser.
@@ -98,6 +102,31 @@ note: we use axios because support node.js and browser.
 
 you can use `react-helmet` like before in your components.
 
+## Code splitting
+
+Code splitting in this project implemented by [`loadable-components`](https://loadable-components.com/).
+
+For routes component you should use our `asyncComponent` in `routes.js` file. the `asyncComponent` will take care of code splitting and `getInitialData` if provided on component. see usage in `routes.js`.
+
+for other components you could see [`loadable-components`](https://loadable-components.com/) documents. but as a short example:
+
+```
+import loadable from '@loadable/component'
+const OtherComponent = loadable(() => import('./OtherComponent'))
+function MyComponent() {
+  return (
+    <div>
+      <OtherComponent />
+    </div>
+  )
+}
+```
+
+Please visit `loadable-components`](https://loadable-components.com/) documents for advanced usages and configuration.
+
+Inside `asyncComponent` we use a simple `loading ...` message until component loaded completely. If you want you can customize it.
+
+
 ## How to test
 
 1- create folder `__tests__` under your component directory.
@@ -119,3 +148,4 @@ note: you can create test file without `__tests__` folder but for better file st
 - [zeit/next.js](https://github.com/zeit/next.js)
 - [after.js](https://github.com/jaredpalmer/after.js)
 - [jaredpalmer/react-router-nextjs-like-data-fetching](https://github.com/jaredpalmer/react-router-nextjs-like-data-fetching)
+- [vue-cli](https://cli.vuejs.org/)
