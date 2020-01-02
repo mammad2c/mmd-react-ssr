@@ -121,11 +121,7 @@ const configGenerator = target => {
     );
   }
 
-  let devServer = {
-    writeToDisk: true,
-    quit: true,
-    noInfo: true
-  };
+  let devServer;
 
   if (isClient && !isProduction) {
     devServer = {
