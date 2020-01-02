@@ -1,10 +1,9 @@
-// Route components
+import asyncComponent from './asyncComponent';
+
+// route components
 import Home from './screens/Home';
 import About from './screens/About';
-import Projects from './screens/Projects';
-
-// SSR HOC
-import withSSR from './components/withSSR';
+import NotFound from './components/NotFound';
 
 export default [
   {
@@ -20,6 +19,10 @@ export default [
   {
     path: '/projects',
     exact: true,
-    component: withSSR(Projects)
+    component: asyncComponent('./screens/Projects.jsx')
+  },
+  {
+    path: '*',
+    component: NotFound
   }
 ];
