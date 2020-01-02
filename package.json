@@ -4,13 +4,15 @@
   "main": "build/server.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn clean && NODE_ENV=development webpack-dev-server --watch --config webpacks/configGenerator.js",
-    "start-dev-server": "NODE_ENV=development nodemon .build/server.js",
-    "build": "yarn clean && NODE_ENV=production webpack --config webpacks/configGenerator.js",
+    "start": "yarn clean && cross-env NODE_ENV=development webpack-dev-server --watch --config webpacks/configGenerator.js",
+    "start-dev-server": "cross-env NODE_ENV=development nodemon .build/server.js",
+    "build": "yarn clean && cross-env NODE_ENV=production webpack --config webpacks/configGenerator.js",
     "clean": "rimraf -rf build",
     "start-prod-server": "nodemon build/server.js",
     "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch --passWithNoTests"
+    "test:watch": "jest --watch --passWithNoTests",
+    "lint:js": "eslint --fix src/**/*.{js,jsx}",
+    "lint:styles": "stylelint --fix src/**/*.{css,scss,less,sass}"
   },
   "dependencies": {
     "@loadable/component": "^5.11.0",
@@ -42,6 +44,7 @@
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "chokidar": "^3.3.1",
+    "cross-env": "^6.0.3",
     "css-loader": "^3.4.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -80,11 +83,11 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
-      "eslint --fix",
+      "yarn lint:js",
       "git add"
     ],
     "src/**/*.{css,scss,less,sass}": [
-      "stylelint --fix",
+      "yarn lint:styles",
       "git add"
     ]
   },
