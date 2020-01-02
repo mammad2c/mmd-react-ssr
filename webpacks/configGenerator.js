@@ -9,6 +9,7 @@ const nodeExternals = require('webpack-node-externals');
 const shell = require('shelljs');
 const chokidar = require('chokidar');
 const LoadablePlugin = require('@loadable/webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const webpackUtils = require('./webpack.utils');
 
 const imageRegex = /\.(png|jpe?g|gif|bmp)$/;
@@ -76,7 +77,8 @@ const configGenerator = target => {
       new LoadablePlugin({
         filename: 'assets.json',
         writeToDisk: true
-      })
+      }),
+      new CopyPlugin([{ from: 'public', to: '' }])
     );
 
     plugins = plugins.concat(
