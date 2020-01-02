@@ -35,7 +35,7 @@ const configGenerator = target => {
           ...entry
         ];
   } else {
-    entry = ['./src/server.jsx'];
+    entry = ['./src/server.js'];
   }
 
   let output = {};
