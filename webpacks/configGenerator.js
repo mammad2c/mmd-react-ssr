@@ -283,7 +283,7 @@ const configGenerator = target => {
     },
     plugins,
     devServer,
-    stats: 'none'
+    stats: 'errors-only'
   };
 };
 
