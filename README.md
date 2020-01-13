@@ -57,9 +57,11 @@ All route components with a `static property` called `getInitialData` can fetch 
 you can see examples in `screens/Projects.jsx` or `screens/About.jsx`.
 
 #### Steps:
+
 2- add a `static async getInitialData` to the a route component:
 
 - after component definition:
+
 ```
 Component.getInitialData = async ({ match, req, res, history, location }) {
     const api = await axios.get('https://jsonplaceholder.typicode.com/users');
@@ -69,6 +71,7 @@ Component.getInitialData = async ({ match, req, res, history, location }) {
 ```
 
 - or during component definition:
+
 ```
 const Component = () => {
   static async getInitialData({ match, req, res, history, location }) {
@@ -108,6 +111,8 @@ Code splitting in this project implemented by [`loadable-components`](https://lo
 
 For routes component you should use our `asyncComponent` in `routes.js` file. the `asyncComponent` will take care of code splitting and `getInitialData` if provided on component. see usage in `routes.js`.
 
+** Important Note ** : `asyncComponent` must used only for `screens` components. you should pass to it just full component file name such as `Projects.jsx` or `About.jsx`.
+
 for other components you could see [`loadable-components`](https://loadable-components.com/) documents. but as a short example:
 
 ```
@@ -125,7 +130,6 @@ function MyComponent() {
 Please visit `loadable-components`](https://loadable-components.com/) documents for advanced usages and configuration.
 
 Inside `asyncComponent` we use a simple `loading ...` message until component loaded completely. If you want you can customize it.
-
 
 ## How to test
 

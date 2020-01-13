@@ -50,7 +50,6 @@ const configGenerator = target => {
       chunkFilename: `static/js/${
         isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
       }`,
-      pathinfo: true,
       publicPath: isProduction ? '/' : 'http://localhost:3001/',
       libraryTarget: 'var'
     };
@@ -86,7 +85,7 @@ const configGenerator = target => {
         ? [
             new MiniCssExtractPlugin({
               filename: 'static/css/[name].[contenthash:8].css',
-              chunkFilename: 'static/css/[id].[contenthash:8].chunk.css',
+              chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
               allChunks: true
             })
           ]
@@ -157,7 +156,7 @@ const configGenerator = target => {
     output,
     devtool: isProduction ? false : 'cheap-module-eval-source-map',
     externals: isClient
-      ? []
+      ? undefined
       : [
           '@loadable/component',
           nodeExternals({

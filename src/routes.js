@@ -19,7 +19,7 @@ export default [
   {
     path: '/projects',
     exact: true,
-    component: asyncComponent('./screens/Projects.jsx')
+    component: asyncComponent('Projects.jsx')
   },
   {
     path: '*',

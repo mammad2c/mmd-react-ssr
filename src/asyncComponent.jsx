@@ -11,7 +11,9 @@ function getDisplayName(WrappedComponent) {
   );
 }
 
-const AsyncComponentLoadable = loadable(props => import(`${props.path}`));
+const AsyncComponentLoadable = loadable(props =>
+  import(`./screens/${props.path}`)
+);
 
 export default function asyncComponent(path) {
   let Component = null;
