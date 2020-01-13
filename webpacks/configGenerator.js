@@ -51,12 +51,13 @@ const configGenerator = target => {
         isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
       }`,
       pathinfo: true,
-      publicPath: isProduction ? '' : 'http://localhost:3001/'
+      publicPath: isProduction ? '/' : 'http://localhost:3001/',
+      libraryTarget: 'var'
     };
   } else {
     output = {
       path: path.resolve(__dirname, '../build'),
-      publicPath: isProduction ? '' : 'http://localhost:3001/',
+      publicPath: isProduction ? '/' : 'http://localhost:3001/',
       filename: 'server.js',
       libraryTarget: 'commonjs2'
     };
@@ -66,8 +67,7 @@ const configGenerator = target => {
     new webpack.NoEmitOnErrorsPlugin(),
     new WebpackBar({
       name: isClient ? 'client' : 'server',
-      color: isClient ? '#2196F3' : '#FFEB3B',
-      profile: true
+      color: isClient ? '#2196F3' : '#FFEB3B'
     })
   ];
 
@@ -98,6 +98,9 @@ const configGenerator = target => {
     );
   } else {
     plugins = plugins.concat(
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1
+      }),
       isProduction
         ? []
         : [
@@ -185,9 +188,7 @@ const configGenerator = target => {
           loader: require.resolve('url-loader'),
           options: {
             limit: 10000,
-            name: `${
-              isProduction ? '/' : ''
-            }static/media/[name].[hash:8].[ext]`,
+            name: 'static/media/[name].[hash:8].[ext]',
             emitFile: isClient
           }
         },
@@ -197,9 +198,7 @@ const configGenerator = target => {
             {
               loader: 'file-loader',
               options: {
-                name: `${
-                  isProduction ? '/' : ''
-                }static/media/[name].[hash:8].[ext]`,
+                name: 'static/media/[name].[hash:8].[ext]',
                 emitFile: isClient
               }
             }
@@ -220,14 +219,21 @@ const configGenerator = target => {
                 {
                   loader: 'postcss-loader',
                   options: {
-                    sourceMap: !isProduction
+                    sourceMap: !isProduction,
+                    ident: 'postcss'
                   }
+                },
+                {
+                  loader: 'resolve-url-loader'
                 },
                 {
                   loader: 'sass-loader',
                   options: {
-                    sassOptions: { importLoaders: 2 },
-                    sourceMap: !isProduction
+                    sourceMap: true,
+                    sassOptions: {
+                      importLoaders: 2,
+                      sourceMapContents: false
+                    }
                   }
                 }
               ]
@@ -238,14 +244,28 @@ const configGenerator = target => {
                 {
                   loader: 'css-loader',
                   options: {
-                    importLoaders: 1
+                    importLoaders: 1,
+                    onlyLocals: true
                   }
                 },
-                'postcss-loader',
+                {
+                  loader: 'resolve-url-loader'
+                },
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    sourceMap: !isProduction,
+                    ident: 'postcss'
+                  }
+                },
                 {
                   loader: 'sass-loader',
                   options: {
-                    sassOptions: { importLoaders: 2 }
+                    sourceMap: true,
+                    sassOptions: {
+                      importLoaders: 2,
+                      sourceMapContents: false
+                    }
                   }
                 }
               ]
@@ -255,6 +275,40 @@ const configGenerator = target => {
     optimization: isClient
       ? {
           minimize: true,
+          splitChunks: {
+            cacheGroups: {
+              default: false,
+              vendors: false,
+
+              // vendor chunk
+              vendor: {
+                // name of the chunk
+                name: 'vendor',
+
+                // async + async chunks
+                chunks: 'all',
+
+                // import file path containing node_modules
+                test: /node_modules/,
+
+                // priority
+                priority: 20
+              },
+              defaultVendors: {
+                reuseExistingChunk: true
+              },
+              // common chunk
+              common: {
+                minSize: 10000,
+
+                name: 'common',
+                minChunks: 2,
+                chunks: 'all',
+                priority: 10,
+                reuseExistingChunk: true
+              }
+            }
+          },
           minimizer: [
             new TerserPlugin(webpackUtils.terserPluginOptions),
             new OptimizeCSSAssetsPlugin({
@@ -264,7 +318,9 @@ const configGenerator = target => {
             })
           ]
         }
-      : { minimizer: [new TerserPlugin(webpackUtils.terserPluginOptions)] },
+      : {
+          minimizer: [new TerserPlugin(webpackUtils.terserPluginOptions)]
+        },
     node: isClient
       ? {
           fs: 'empty',
