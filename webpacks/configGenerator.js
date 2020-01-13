@@ -170,7 +170,6 @@ const configGenerator = target => {
           })
         ],
     module: {
-      exprContextCritical: false,
       strictExportPresence: true,
       rules: [
         {
