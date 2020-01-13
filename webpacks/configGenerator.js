@@ -275,9 +275,6 @@ const configGenerator = target => {
     optimization: isClient
       ? {
           minimize: true,
-          splitChunks: {
-            chunks: 'all'
-          },
           minimizer: [
             new TerserPlugin(webpackUtils.terserPluginOptions),
             new OptimizeCSSAssetsPlugin({
