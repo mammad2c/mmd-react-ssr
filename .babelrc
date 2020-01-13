@@ -4,6 +4,12 @@
     "react-hot-loader/babel",
     "@babel/plugin-proposal-class-properties",
     "@babel/transform-runtime",
-    "@loadable/babel-plugin"
+    "@loadable/babel-plugin",
+    [
+      "universal-import",
+      {
+        "babelServer": true
+      }
+    ]
   ]
 }
