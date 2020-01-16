@@ -111,7 +111,9 @@ Code splitting in this project implemented by [`loadable-components`](https://lo
 
 For routes component you should use our `asyncComponent` in `routes.js` file. the `asyncComponent` will take care of code splitting and `getInitialData` if provided on component. see usage in `routes.js`.
 
-** Important Note ** : `asyncComponent` must used only for `screens` components. you should pass to it just full component file name such as `Projects.jsx` or `About.jsx`.
+example:
+
+`asyncComponent(()=> import("./screens/Projects.jsx"))`
 
 for other components you could see [`loadable-components`](https://loadable-components.com/) documents. but as a short example:
 

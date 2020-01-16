@@ -11,16 +11,14 @@ function getDisplayName(WrappedComponent) {
   );
 }
 
-const AsyncComponentLoadable = loadable(props =>
-  import(`./screens/${props.path}`)
-);
+const AsyncComponentLoadable = loadable(props => props.loader());
 
-export default function asyncComponent(path) {
+export default function asyncComponent(loader) {
   let Component = null;
 
   class SSR extends React.Component {
     static async load() {
-      const res = await AsyncComponentLoadable.load({ path });
+      const res = await AsyncComponentLoadable.load({ loader });
       Component = res.default || res;
     }
 

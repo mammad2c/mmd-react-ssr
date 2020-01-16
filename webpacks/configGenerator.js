@@ -85,7 +85,7 @@ const configGenerator = target => {
         ? [
             new MiniCssExtractPlugin({
               filename: 'static/css/[name].[contenthash:8].css',
-              chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+              chunkFilename: 'static/css/[id].[contenthash:8].chunk.css',
               allChunks: true
             })
           ]
