@@ -40,8 +40,6 @@ export default function asyncComponent(loader) {
         isLoading: false,
         Component
       };
-
-      this.ignoreLastFetch = false;
     }
 
     componentDidMount() {
@@ -49,7 +47,11 @@ export default function asyncComponent(loader) {
     }
 
     componentWillUnmount() {
-      this.ignoreLastFetch = true;
+      const { resetInitialData } = this.props;
+
+      if (resetInitialData) {
+        resetInitialData();
+      }
     }
 
     updateState = () => {
@@ -57,36 +59,34 @@ export default function asyncComponent(loader) {
       // Only update state if we don't already have a reference to the
       // component, this prevent unnecessary renders.
       if (ComponentState !== Component) {
-        const { data } = this.state;
-
-        if (!data) {
-          this.fetchData();
-        }
-
         this.setState({
           Component
         });
+      }
+
+      const { data } = this.state;
+
+      if (!data) {
+        this.fetchData();
       }
     };
 
     fetchData = () => {
       // if this.state.data is null, that means that the we are on the client.
       // To get the data we need, we just call getInitialData again on mount.
-      if (!this.ignoreLastFetch) {
-        const { match, history, location } = this.props;
-        this.setState({ isLoading: true });
-        SSR.getInitialData({ match, history, location }).then(
-          data => {
-            this.setState({ data, isLoading: false });
-          },
-          error => {
-            this.setState(() => ({
-              data: { error },
-              isLoading: false
-            }));
-          }
-        );
-      }
+      const { match, history, location } = this.props;
+      this.setState({ isLoading: true });
+      SSR.getInitialData({ match, history, location }).then(
+        data => {
+          this.setState({ data, isLoading: false });
+        },
+        error => {
+          this.setState(() => ({
+            data: { error },
+            isLoading: false
+          }));
+        }
+      );
     };
 
     render() {
@@ -104,7 +104,11 @@ export default function asyncComponent(loader) {
       //   </HttpStatus>
       // }
       if (!ComponentState) {
-        return <div>loading ...</div>;
+        return <div>loading page ...</div>;
+      }
+
+      if (isLoading) {
+        return <div>loading data ...</div>;
       }
 
       return (
@@ -118,6 +122,6 @@ export default function asyncComponent(loader) {
     }
   }
 
-  SSR.displayName = `SSR(${getDisplayName(Component)})`;
+  SSR.displayName = `asyncComponent SSR(${getDisplayName(Component)})`;
   return SSR;
 }

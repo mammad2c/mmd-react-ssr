@@ -23,7 +23,6 @@ export default function withSSR(Page) {
         data: props.initialData,
         isLoading: false
       };
-      this.ignoreLastFetch = false;
     }
 
     componentDidMount() {
@@ -34,27 +33,29 @@ export default function withSSR(Page) {
     }
 
     componentWillUnmount() {
-      this.ignoreLastFetch = true;
+      const { resetInitialData } = this.props;
+
+      if (resetInitialData) {
+        resetInitialData();
+      }
     }
 
     fetchData = () => {
       // if this.state.data is null, that means that the we are on the client.
       // To get the data we need, we just call getInitialData again on mount.
-      if (!this.ignoreLastFetch) {
-        const { match, history, location } = this.props;
-        this.setState({ isLoading: true });
-        this.constructor.getInitialData({ match, history, location }).then(
-          data => {
-            this.setState({ data, isLoading: false });
-          },
-          error => {
-            this.setState(() => ({
-              data: { error },
-              isLoading: false
-            }));
-          }
-        );
-      }
+      const { match, history, location } = this.props;
+      this.setState({ isLoading: true });
+      this.constructor.getInitialData({ match, history, location }).then(
+        data => {
+          this.setState({ data, isLoading: false });
+        },
+        error => {
+          this.setState(() => ({
+            data: { error },
+            isLoading: false
+          }));
+        }
+      );
     };
 
     render() {
@@ -71,6 +72,9 @@ export default function withSSR(Page) {
       //     {/* cool error screen based on status code */}
       //   </HttpStatus>
       // }
+      if (isLoading) {
+        return <div>loading data ...</div>;
+      }
 
       return (
         <Page
@@ -83,6 +87,6 @@ export default function withSSR(Page) {
     }
   }
 
-  SSR.displayName = `SSR(${getDisplayName(Page)})`;
+  SSR.displayName = `withSSR(${getDisplayName(Page)})`;
   return SSR;
 }
