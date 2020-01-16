@@ -2,6 +2,8 @@
 
 A React Server Side rendered application template (isomorphic) with support fetch data like Next.js using React Router
 
+![demo](demo.gif)
+
 🔥 Using React Router.
 
 🔥 Support Hot Reloading!!!
