@@ -131,7 +131,7 @@ function MyComponent() {
 }
 ```
 
-Please visit `loadable-components`](https://loadable-components.com/) documents for advanced usages and configuration.
+Please visit [`loadable-components`](https://loadable-components.com/) documents for advanced usages and configuration.
 
 Inside `asyncComponent` we use a simple `loading ...` message until component loaded completely. If you want you can customize it.
 
