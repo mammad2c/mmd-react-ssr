@@ -17,6 +17,10 @@ app.get('/*', (req, res) => {
     // We then look for static getInitialData function on each top level component
     const { component } = route;
     if (match) {
+      if (!match.isExact && route.exact) {
+        return null;
+      }
+
       const obj = {
         route,
         match,
