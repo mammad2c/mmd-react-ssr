@@ -273,18 +273,25 @@ const configGenerator = target => {
     },
     optimization: isClient
       ? {
-          minimize: true,
-          minimizer: [
-            new TerserPlugin(webpackUtils.terserPluginOptions),
-            new OptimizeCSSAssetsPlugin({
-              cssProcessorPluginOptions: {
-                preset: ['default', { discardComments: { removeAll: true } }]
-              }
-            })
-          ]
+          minimize: !!isProduction,
+          minimizer: isProduction
+            ? [
+                new TerserPlugin(webpackUtils.terserPluginOptions),
+                new OptimizeCSSAssetsPlugin({
+                  cssProcessorPluginOptions: {
+                    preset: [
+                      'default',
+                      { discardComments: { removeAll: true } }
+                    ]
+                  }
+                })
+              ]
+            : []
         }
       : {
-          minimizer: [new TerserPlugin(webpackUtils.terserPluginOptions)]
+          minimizer: isProduction
+            ? [new TerserPlugin(webpackUtils.terserPluginOptions)]
+            : []
         },
     node: isClient
       ? {
