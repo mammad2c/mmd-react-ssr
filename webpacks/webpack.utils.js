@@ -21,9 +21,13 @@ class WebpackBeforeBuildPlugin {
 
 const terserPluginOptions = {
   terserOptions: {
+    parse: {
+      ecma: 8,
+    },
     compress: {
-      arrows: false,
+      ecma: 5,
       collapse_vars: false,
+      warnings: false,
       comparisons: false,
       computed_props: false,
       hoist_funs: false,
@@ -45,14 +49,17 @@ const terserPluginOptions = {
       conditionals: true,
       warnings: false,
       dead_code: true,
-      evaluate: true
+      evaluate: true,
+      inline: 2,
     },
     mangle: {
-      safari10: true
+      safari10: true,
     },
     output: {
-      comments: false
-    }
+      ecma: 5,
+      comments: false,
+      ascii_only: true,
+    },
   },
   sourceMap: false,
   cache: true,
