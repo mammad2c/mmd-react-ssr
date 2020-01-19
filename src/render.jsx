@@ -24,6 +24,13 @@ const extractor = new ChunkExtractor({ statsFile: assets });
  */
 const render = (data, req, res, preloadedState) => {
   const context = {};
+  /**
+   * you can configure redux store with preloadedState here.
+   * or you can pass other objects you want as preloadedState for other usages.
+   * example: const store = configureStore(preloadedState)
+   */
+
+  // store configuration here
 
   const jsx = extractor.collectChunks(
     <StaticRouter location={req.url} context={context}>
@@ -37,13 +44,6 @@ const render = (data, req, res, preloadedState) => {
     res.redirect(context.url);
   } else {
     const helmet = Helmet.renderStatic();
-
-    /**
-     * you can configure redux store with preloadedState here.
-     * example: const store = configureStore(preloadedState)
-     */
-
-    // store configuration here
 
     /**
      * if you configured store, such as redux, replace INITIAL_STATE value by: 
