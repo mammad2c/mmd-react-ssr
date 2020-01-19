@@ -37,7 +37,7 @@ export default function asyncComponent(loader) {
       super(props);
       this.state = {
         data: props.initialData,
-        isLoading: false,
+        isLoading: !props.initialData,
         Component
       };
     }

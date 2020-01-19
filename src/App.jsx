@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
 
 // base SASS file
 import './styles/App.scss';
 
-const App = ({ routes, initialData }) => {
-  const [data, setData] = useState(initialData);
-
-  const resetInitialData = () => {
-    setData([]);
-  };
-
+const App = ({ routes, initialData, resetInitialData }) => {
   return (
     <div>
       <header className="site-header">
@@ -31,7 +25,7 @@ const App = ({ routes, initialData }) => {
                 React.createElement(routeItem.component, {
                   ...props,
                   resetInitialData,
-                  initialData: (data && data[index]) || null
+                  initialData: (initialData && initialData[index]) || null
                 })
               }
             />

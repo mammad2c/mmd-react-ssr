@@ -21,7 +21,7 @@ export default function withSSR(Page) {
       super(props);
       this.state = {
         data: props.initialData,
-        isLoading: false
+        isLoading: !props.initialData
       };
     }
 
@@ -45,7 +45,7 @@ export default function withSSR(Page) {
       // To get the data we need, we just call getInitialData again on mount.
       const { match, history, location } = this.props;
       this.setState({ isLoading: true });
-      this.constructor.getInitialData({ match, history, location }).then(
+      SSR.getInitialData({ match, history, location }).then(
         data => {
           this.setState({ data, isLoading: false });
         },
