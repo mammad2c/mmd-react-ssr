@@ -85,12 +85,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
-      "yarn lint:js",
-      "git add"
+      "yarn lint:js"
     ],
     "src/**/*.{css,scss,less,sass}": [
-      "yarn lint:styles",
-      "git add"
+      "yarn lint:styles"
     ]
   },
   "husky": {
