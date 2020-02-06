@@ -112,9 +112,8 @@
     ]
   },
   "nodemonConfig": {
-    "delay": "1000",
     "watch": [
-      "build"
+      "build/server.js"
     ]
   },
   "jest": {
