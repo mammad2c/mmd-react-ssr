@@ -10,10 +10,12 @@ const shell = require('shelljs');
 const chokidar = require('chokidar');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const internalIP = require('internal-ip');
 const webpackUtils = require('./webpack.utils');
 
 const imageRegex = /\.(png|jpe?g|gif|bmp)$/;
 const fontRegex = /\.(woff|woff2|ttf|eot|svg|otf|webp)$/;
+const IP = internalIP.v4.sync();
 
 /**
  * parameters:
@@ -31,7 +33,7 @@ const configGenerator = target => {
       ? entry
       : [
           'react-hot-loader/patch',
-          'webpack-dev-server/client?http://localhost:3001',
+          `webpack-dev-server/client?http://${IP}:3001`,
           'webpack/hot/only-dev-server',
           ...entry
         ];
@@ -50,13 +52,13 @@ const configGenerator = target => {
       chunkFilename: `static/js/${
         isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
       }`,
-      publicPath: isProduction ? '/' : 'http://localhost:3001/',
+      publicPath: isProduction ? '/' : `http://${IP}:3001/`,
       libraryTarget: 'var'
     };
   } else {
     output = {
       path: path.resolve(__dirname, '../build'),
-      publicPath: isProduction ? '/' : 'http://localhost:3001/',
+      publicPath: isProduction ? '/' : `http://${IP}:3001/`,
       filename: 'server.js',
       libraryTarget: 'commonjs2'
     };
@@ -137,7 +139,7 @@ const configGenerator = target => {
       historyApiFallback: {
         disableDotRule: true
       },
-      host: 'localhost',
+      host: `${IP}`,
       hot: true,
       noInfo: true,
       overlay: true,
