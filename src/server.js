@@ -28,7 +28,11 @@ app.get('/*', (req, res) => {
         promise: component.load
           ? component
               .load()
-              .then(() => component.getInitialData({ match, req, res }))
+              .then(() =>
+                component.getInitialData
+                  ? component.getInitialData({ match, req, res })
+                  : Promise.resolve(null)
+              )
           : component.getInitialData
           ? component.getInitialData({ match, req, res })
           : Promise.resolve(null)

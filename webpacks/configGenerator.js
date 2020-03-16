@@ -275,6 +275,9 @@ const configGenerator = target => {
     },
     optimization: isClient
       ? {
+          splitChunks: {
+            chunks: 'all'
+          },
           minimize: !!isProduction,
           minimizer: isProduction
             ? [
