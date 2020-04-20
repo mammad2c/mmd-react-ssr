@@ -21,11 +21,11 @@ const App = ({ routes, initialData, resetInitialData }) => {
               key={routeItem.path}
               path={routeItem.path}
               exact={routeItem.exact}
-              render={props =>
+              render={(props) =>
                 React.createElement(routeItem.component, {
                   ...props,
                   resetInitialData,
-                  initialData: (initialData && initialData[index]) || null
+                  initialData: (initialData && initialData[index]) || null,
                 })
               }
             />

@@ -21,7 +21,7 @@ export default function withSSR(Page) {
       super(props);
       this.state = {
         data: props.initialData,
-        isLoading: !props.initialData
+        isLoading: !props.initialData,
       };
     }
 
@@ -46,13 +46,13 @@ export default function withSSR(Page) {
       const { match, history, location } = this.props;
       this.setState({ isLoading: true });
       SSR.getInitialData({ match, history, location }).then(
-        data => {
+        (data) => {
           this.setState({ data, isLoading: false });
         },
-        error => {
+        (error) => {
           this.setState(() => ({
             data: { error },
-            isLoading: false
+            isLoading: false,
           }));
         }
       );

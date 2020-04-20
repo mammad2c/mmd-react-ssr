@@ -9,7 +9,7 @@ const About = ({ match, req, res, history, location, initialData }) => {
   return (
     <div className="about">
       <h1>About</h1>
-      {initialData.map(item => (
+      {initialData.map((item) => (
         <div key={item.id}>
           <h3>{item.title}</h3>
           <div>{item.body}</div>

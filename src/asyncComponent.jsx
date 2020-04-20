@@ -11,7 +11,7 @@ function getDisplayName(WrappedComponent) {
   );
 }
 
-const AsyncComponentLoadable = loadable(props => props.loader());
+const AsyncComponentLoadable = loadable((props) => props.loader());
 
 export default function asyncComponent(loader) {
   let Component = null;
@@ -38,7 +38,7 @@ export default function asyncComponent(loader) {
       this.state = {
         data: props.initialData,
         isLoading: !props.initialData,
-        Component
+        Component,
       };
     }
 
@@ -60,7 +60,7 @@ export default function asyncComponent(loader) {
       // component, this prevent unnecessary renders.
       if (ComponentState !== Component) {
         this.setState({
-          Component
+          Component,
         });
       }
 
@@ -77,13 +77,13 @@ export default function asyncComponent(loader) {
       const { match, history, location } = this.props;
       this.setState({ isLoading: true });
       SSR.getInitialData({ match, history, location }).then(
-        data => {
+        (data) => {
           this.setState({ data, isLoading: false });
         },
-        error => {
+        (error) => {
           this.setState(() => ({
             data: { error },
-            isLoading: false
+            isLoading: false,
           }));
         }
       );

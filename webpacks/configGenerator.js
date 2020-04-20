@@ -21,7 +21,7 @@ const IP = internalIP.v4.sync();
  * parameters:
  * @param {string} target client || server
  */
-const configGenerator = target => {
+const configGenerator = (target) => {
   const isClient = target === 'client';
   const isProduction = process.env.NODE_ENV === 'production';
   let firstBuildServer = false;
@@ -35,7 +35,7 @@ const configGenerator = target => {
           'react-hot-loader/patch',
           `webpack-dev-server/client?http://${IP}:3001`,
           'webpack/hot/only-dev-server',
-          ...entry
+          ...entry,
         ];
   } else {
     entry = ['./src/server.js'];
@@ -53,14 +53,14 @@ const configGenerator = target => {
         isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
       }`,
       publicPath: isProduction ? '/' : `http://${IP}:3001/`,
-      libraryTarget: 'var'
+      libraryTarget: 'var',
     };
   } else {
     output = {
       path: path.resolve(__dirname, '../build'),
       publicPath: isProduction ? '/' : `http://${IP}:3001/`,
       filename: 'server.js',
-      libraryTarget: 'commonjs2'
+      libraryTarget: 'commonjs2',
     };
   }
 
@@ -68,8 +68,8 @@ const configGenerator = target => {
     new webpack.NoEmitOnErrorsPlugin(),
     new WebpackBar({
       name: isClient ? 'client' : 'server',
-      color: isClient ? '#2196F3' : '#FFEB3B'
-    })
+      color: isClient ? '#2196F3' : '#FFEB3B',
+    }),
   ];
 
   if (isClient) {
@@ -77,7 +77,7 @@ const configGenerator = target => {
       new webpack.NamedModulesPlugin(),
       new LoadablePlugin({
         filename: 'assets.json',
-        writeToDisk: true
+        writeToDisk: true,
       }),
       new CopyPlugin([{ from: 'public', to: '' }])
     );
@@ -88,19 +88,19 @@ const configGenerator = target => {
             new MiniCssExtractPlugin({
               filename: 'static/css/[name].[contenthash:8].css',
               chunkFilename: 'static/css/[id].[contenthash:8].chunk.css',
-              allChunks: true
-            })
+              allChunks: true,
+            }),
           ]
         : [
             new webpack.HotModuleReplacementPlugin({
-              multiStep: true
-            })
+              multiStep: true,
+            }),
           ]
     );
   } else {
     plugins = plugins.concat(
       new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1
+        maxChunks: 1,
       }),
       isProduction
         ? []
@@ -111,7 +111,7 @@ const configGenerator = target => {
               if (!firstBuildServer) {
                 watch = chokidar.watch('./build/assets.json').on('add', () => {
                   shell.exec('yarn start-dev-server', {
-                    async: true
+                    async: true,
                   });
                   firstBuildServer = true;
                 });
@@ -120,7 +120,7 @@ const configGenerator = target => {
                 watch.close();
                 watch = undefined;
               }
-            })
+            }),
           ]
     );
   }
@@ -134,10 +134,10 @@ const configGenerator = target => {
       clientLogLevel: 'trace',
       compress: true,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
       },
       historyApiFallback: {
-        disableDotRule: true
+        disableDotRule: true,
       },
       host: `${IP}`,
       hot: true,
@@ -145,8 +145,8 @@ const configGenerator = target => {
       overlay: true,
       port: 3001,
       watchOptions: {
-        ignored: /node_modules/
-      }
+        ignored: /node_modules/,
+      },
     };
   }
 
@@ -167,9 +167,9 @@ const configGenerator = target => {
               /\.(eot|woff|woff2|ttf|otf)$/,
               /\.(svg|png|jpg|jpeg|gif|ico)$/,
               /\.(mp4|mp3|ogg|swf|webp)$/,
-              /\.(css|scss|sass|sss|less)$/
-            ].filter(x => x)
-          })
+              /\.(css|scss|sass|sss|less)$/,
+            ].filter((x) => x),
+          }),
         ],
     module: {
       strictExportPresence: true,
@@ -180,9 +180,9 @@ const configGenerator = target => {
           use: {
             loader: 'babel-loader',
             options: {
-              cacheDirectory: true
-            }
-          }
+              cacheDirectory: true,
+            },
+          },
         },
         {
           test: imageRegex,
@@ -190,8 +190,8 @@ const configGenerator = target => {
           options: {
             limit: 10000,
             name: 'static/media/[name].[hash:8].[ext]',
-            emitFile: isClient
-          }
+            emitFile: isClient,
+          },
         },
         {
           test: fontRegex,
@@ -200,10 +200,10 @@ const configGenerator = target => {
               loader: 'file-loader',
               options: {
                 name: 'static/media/[name].[hash:8].[ext]',
-                emitFile: isClient
-              }
-            }
-          ]
+                emitFile: isClient,
+              },
+            },
+          ],
         },
         isClient
           ? {
@@ -214,18 +214,18 @@ const configGenerator = target => {
                   loader: 'css-loader',
                   options: {
                     sourceMap: !isProduction,
-                    importLoaders: 1
-                  }
+                    importLoaders: 1,
+                  },
                 },
                 {
                   loader: 'postcss-loader',
                   options: {
                     sourceMap: !isProduction,
-                    ident: 'postcss'
-                  }
+                    ident: 'postcss',
+                  },
                 },
                 {
-                  loader: 'resolve-url-loader'
+                  loader: 'resolve-url-loader',
                 },
                 {
                   loader: 'sass-loader',
@@ -233,11 +233,11 @@ const configGenerator = target => {
                     sourceMap: true,
                     sassOptions: {
                       importLoaders: 2,
-                      sourceMapContents: false
-                    }
-                  }
-                }
-              ]
+                      sourceMapContents: false,
+                    },
+                  },
+                },
+              ],
             }
           : {
               test: /\.(s*)css$/,
@@ -246,18 +246,18 @@ const configGenerator = target => {
                   loader: 'css-loader',
                   options: {
                     importLoaders: 1,
-                    onlyLocals: true
-                  }
+                    onlyLocals: true,
+                  },
                 },
                 {
-                  loader: 'resolve-url-loader'
+                  loader: 'resolve-url-loader',
                 },
                 {
                   loader: 'postcss-loader',
                   options: {
                     sourceMap: !isProduction,
-                    ident: 'postcss'
-                  }
+                    ident: 'postcss',
+                  },
                 },
                 {
                   loader: 'sass-loader',
@@ -265,13 +265,13 @@ const configGenerator = target => {
                     sourceMap: true,
                     sassOptions: {
                       importLoaders: 2,
-                      sourceMapContents: false
-                    }
-                  }
-                }
-              ]
-            }
-      ]
+                      sourceMapContents: false,
+                    },
+                  },
+                },
+              ],
+            },
+      ],
     },
     optimization: isClient
       ? {
@@ -283,37 +283,37 @@ const configGenerator = target => {
                   cssProcessorPluginOptions: {
                     preset: [
                       'default',
-                      { discardComments: { removeAll: true } }
-                    ]
-                  }
-                })
+                      { discardComments: { removeAll: true } },
+                    ],
+                  },
+                }),
               ]
-            : []
+            : [],
         }
       : {
           minimizer: isProduction
             ? [new TerserPlugin(webpackUtils.terserPluginOptions)]
-            : []
+            : [],
         },
     node: isClient
       ? {
           fs: 'empty',
-          net: 'empty'
+          net: 'empty',
         }
       : {
-          __dirname: false
+          __dirname: false,
         },
     resolve: {
       extensions: ['.jsx', '.js'],
       alias: {
         'webpack/hot/poll': require.resolve('webpack/hot/poll'),
-        'react-dom': '@hot-loader/react-dom'
+        'react-dom': '@hot-loader/react-dom',
       },
-      modules: [path.join(__dirname, '../src'), 'node_modules']
+      modules: [path.join(__dirname, '../src'), 'node_modules'],
     },
     plugins,
     devServer,
-    stats: 'errors-only'
+    stats: 'errors-only',
   };
 };
 

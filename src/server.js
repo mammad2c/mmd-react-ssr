@@ -12,7 +12,19 @@ app.use(express.static(__dirname));
 app.disable('x-powered-by');
 
 app.get('/*', (req, res) => {
-  const matches = routes.map(route => {
+  /**
+   * you can configure your store (etc: redux store) with preloadedState here.
+   * or you can pass other objects you want as preloadedState for other usages.
+   *
+   * redux example:
+   * const preloadedState = { token: 'sample token', profile: 'current user profile' }
+   * const store = configureStore(preloadedState)
+   *
+   */
+
+  // store configuration here
+
+  const matches = routes.map((route) => {
     const match = matchPath(req.path, route.path, route);
     // We then look for static getInitialData function on each top level component
     const { component } = route;
@@ -35,7 +47,7 @@ app.get('/*', (req, res) => {
               )
           : component.getInitialData
           ? component.getInitialData({ match, req, res })
-          : Promise.resolve(null)
+          : Promise.resolve(null),
       };
       return obj;
     }
@@ -46,20 +58,21 @@ app.get('/*', (req, res) => {
     res.status(404).send('Not Found');
   }
 
-  const promises = matches.map(match => (match ? match.promise : null));
+  const promises = matches.map((match) => (match ? match.promise : null));
 
   Promise.all(promises)
-    .then(data => {
+    .then((data) => {
+      // you can pass store.getState() as 4th parameter to render
       render(data, req, res);
     })
-    .catch(error => {
+    .catch((error) => {
       console.log('error', error.message);
       res.status(500).json({ error: error.message, stack: error.stack });
     });
 });
 
 app.listen(3000, () => {
-  console.log('Open browser at http://localhost:3000');
+  console.log('Your app ready at http://localhost:3000');
 });
 
 if (module.hot) {

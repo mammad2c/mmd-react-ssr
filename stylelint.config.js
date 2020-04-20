@@ -4,9 +4,9 @@ module.exports = {
     'rule-empty-line-before': [
       'always',
       {
-        ignore: 'first-nested'
-      }
+        ignore: 'first-nested',
+      },
     ],
-    indentation: 2
-  }
+    indentation: 2,
+  },
 };

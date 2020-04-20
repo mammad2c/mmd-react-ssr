@@ -22,15 +22,8 @@ const extractor = new ChunkExtractor({ statsFile: assets });
  * @param {ExpressResponse} res ExpressJs response object
  * @param {object} preloadedState preloaded state or other configuration, example usage: redux
  */
-const render = (data, req, res, preloadedState) => {
+const render = (data, req, res, preloadedState = {}) => {
   const context = {};
-  /**
-   * you can configure redux store with preloadedState here.
-   * or you can pass other objects you want as preloadedState for other usages.
-   * example: const store = configureStore(preloadedState)
-   */
-
-  // store configuration here
 
   const jsx = extractor.collectChunks(
     <StaticRouter location={req.url} context={context}>
@@ -68,12 +61,12 @@ const render = (data, req, res, preloadedState) => {
               <div id="app">${html}</div>
               <script>
                 window.INITIAL_STATE =  ${serialize(preloadedState, {
-                  isJSON: true
+                  isJSON: true,
                 })};
               </script>
               <script>
                 window.INITIAL_DATA = ${serialize(data, {
-                  isJSON: true
+                  isJSON: true,
                 })};
               </script>
               ${extractor.getScriptTags()}

@@ -9,20 +9,20 @@ export default [
   {
     path: '/',
     exact: true,
-    component: Home
+    component: Home,
   },
   {
     path: '/about',
     exact: true,
-    component: About
+    component: About,
   },
   {
     path: '/projects',
     exact: true,
-    component: asyncComponent(() => import('./screens/Projects'))
+    component: asyncComponent(() => import('./screens/Projects')),
   },
   {
     path: '*',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ];

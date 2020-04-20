@@ -10,7 +10,7 @@ const Projects = ({ initialData }) => {
     <div>
       <h1>Projects</h1>
 
-      {initialData.map(item => (
+      {initialData.map((item) => (
         <div key={item.id}>
           <h3>{item.name}</h3>
           <p>{item.email}</p>
