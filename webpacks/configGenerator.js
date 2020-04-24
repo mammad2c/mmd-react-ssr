@@ -53,6 +53,8 @@ const configGenerator = (target) => {
         isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
       }`,
       publicPath: isProduction ? '/' : `http://${IP}:3001/`,
+      hotUpdateChunkFilename: 'hot-update.js',
+      hotUpdateMainFilename: 'hot-update.json',
       libraryTarget: 'var',
     };
   } else {
