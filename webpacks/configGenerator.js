@@ -81,7 +81,9 @@ const configGenerator = (target) => {
         filename: 'assets.json',
         writeToDisk: true,
       }),
-      new CopyPlugin([{ from: 'public', to: '' }])
+      new CopyPlugin({
+        patterns: [{ from: 'public', to: '' }],
+      })
     );
 
     plugins = plugins.concat(
