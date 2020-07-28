@@ -166,7 +166,7 @@ const configGenerator = (target) => {
       : [
           '@loadable/component',
           nodeExternals({
-            whitelist: [
+            allowlist: [
               isProduction ? null : 'webpack/hot/poll?300',
               /\.(eot|woff|woff2|ttf|otf)$/,
               /\.(svg|png|jpg|jpeg|gif|ico)$/,
@@ -250,7 +250,6 @@ const configGenerator = (target) => {
                   loader: 'css-loader',
                   options: {
                     importLoaders: 1,
-                    onlyLocals: true,
                   },
                 },
                 {
