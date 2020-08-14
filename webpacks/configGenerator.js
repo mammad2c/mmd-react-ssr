@@ -250,6 +250,9 @@ const configGenerator = (target) => {
                   loader: 'css-loader',
                   options: {
                     importLoaders: 1,
+                    modules: {
+                      exportOnlyLocals: true,
+                    },
                   },
                 },
                 {
