@@ -111,8 +111,8 @@
     ]
   },
   "nodemonConfig": {
-    "watch": [
-      "build/server.js"
+    "ignore": [
+      "build/*"
     ]
   },
   "jest": {
