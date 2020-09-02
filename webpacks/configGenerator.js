@@ -47,14 +47,12 @@ const configGenerator = (target) => {
     output = {
       path: path.resolve(__dirname, '../build/'),
       filename: `static/js/${
-        isProduction ? 'bundle.[hash:8].js' : 'bundle.js'
+        isProduction ? 'bundle.[chunkhash:8].js' : 'bundle.js'
       }`,
       chunkFilename: `static/js/${
-        isProduction ? '[id].[hash:8].chunk.js' : '[id].chunk.js'
+        isProduction ? '[id].[chunkhash:8].chunk.js' : '[id].chunk.js'
       }`,
       publicPath: isProduction ? '/' : `http://${IP}:3001/`,
-      hotUpdateChunkFilename: 'hot-update.js',
-      hotUpdateMainFilename: 'hot-update.json',
       libraryTarget: 'var',
     };
   } else {
