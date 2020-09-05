@@ -40,9 +40,6 @@ function compileClient() {
     onListening() {
       console.clear();
     },
-    stats: 'none',
-    quiet: true,
-    noInfo: true,
   });
 
   clientCompiler.hooks.done.tap('AfterClientCompile', () => {
