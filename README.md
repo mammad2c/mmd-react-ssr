@@ -6,7 +6,7 @@ A React Server Side rendered application template (isomorphic) with support fetc
 
 🔥 Using React Router.
 
-🔥 Support Hot Reloading!!!
+🔥 Support React Fast Refresh
 
 🔥 Code splitting by [`loadable-components`](https://loadable-components.com/), recommended solution by [`React Team`](https://reactjs.org/docs/code-splitting.html#reactlazy)
 
