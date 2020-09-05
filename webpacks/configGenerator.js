@@ -144,6 +144,7 @@ const configGenerator = (target) => {
       },
       host: `${IP}`,
       hot: true,
+      quiet: true,
       noInfo: true,
       overlay: true,
       port: 3001,
@@ -324,4 +325,4 @@ const configGenerator = (target) => {
   };
 };
 
-module.exports = [configGenerator('client'), configGenerator('server')];
+module.exports = configGenerator;

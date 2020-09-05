@@ -4,9 +4,9 @@
   "main": "build/server.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn clean && cross-env NODE_ENV=development webpack-dev-server --watch --config webpacks/configGenerator.js",
-    "start-dev-server": "cross-env NODE_ENV=development nodemon .build/server.js",
-    "build": "yarn clean && cross-env NODE_ENV=production webpack --config webpacks/configGenerator.js",
+    "start": "yarn clean && cross-env NODE_ENV=development node scripts/run.js",
+    "start-dev-server": "cross-env NODE_ENV=development nodemon ./build/server.js",
+    "build": "yarn clean && cross-env NODE_ENV=production node scripts/build.js",
     "clean": "rimraf -rf build",
     "start-prod-server": "nodemon build/server.js",
     "test": "jest --passWithNoTests",
@@ -110,8 +110,8 @@
     ]
   },
   "nodemonConfig": {
-    "ignore": [
-      "build/*"
+    "watch": [
+      "build/server.js"
     ]
   },
   "jest": {
