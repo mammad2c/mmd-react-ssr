@@ -4,7 +4,6 @@
 const webpack = require('webpack');
 const configGenerator = require('../webpacks/configGenerator');
 
-// const isProduction = process.env.NODE_ENV === 'production';
 function compileServer() {
   const serverConfig = configGenerator('server');
 

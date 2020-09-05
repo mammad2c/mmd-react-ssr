@@ -9,7 +9,6 @@ const configGenerator = require('../webpacks/configGenerator');
 
 let serverStarted = false;
 
-// const isProduction = process.env.NODE_ENV === 'production';
 function compileServer() {
   const serverConfig = configGenerator('server');
 
