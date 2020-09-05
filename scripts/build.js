@@ -18,11 +18,8 @@ function compileClient() {
 
   const clientCompiler = webpack(clientConfig);
 
-  clientCompiler.hooks.done.tap('AfterClientCompile', () => {
-    compileServer();
-  });
-
   clientCompiler.run(() => {});
 }
 
 compileClient();
+compileServer();
