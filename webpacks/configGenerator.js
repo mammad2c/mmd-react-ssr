@@ -99,10 +99,13 @@ const configGenerator = (target) => {
     );
   } else {
     plugins = plugins.concat(
-      new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1,
-      }),
-      isProduction ? [] : [new webpack.HotModuleReplacementPlugin()]
+      isProduction
+        ? [
+            new webpack.optimize.LimitChunkCountPlugin({
+              maxChunks: 1,
+            }),
+          ]
+        : [new webpack.HotModuleReplacementPlugin()]
     );
   }
 
