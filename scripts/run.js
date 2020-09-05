@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable new-cap */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -28,20 +29,30 @@ function compileServer() {
 }
 
 function compileClient() {
+  console.clear();
+
   const clientConfig = configGenerator('client');
 
   const clientCompiler = webpack(clientConfig);
+
+  const clientDevServer = new devServer(clientCompiler, {
+    ...clientConfig.devServer,
+    onListening() {
+      console.clear();
+    },
+    stats: 'none',
+    quiet: true,
+    noInfo: true,
+  });
 
   clientCompiler.hooks.done.tap('AfterClientCompile', () => {
     if (!serverStarted) {
       compileServer();
     }
-  });
 
-  const clientDevServer = new devServer(clientCompiler, clientConfig.devServer);
-
-  clientDevServer.listen(3001, (err) => {
-    console.log('dev serverError: ', err);
+    clientDevServer.listen(3001, (err) => {
+      console.log('dev serverError: ', err);
+    });
   });
 }
 
