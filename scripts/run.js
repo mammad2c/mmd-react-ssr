@@ -20,11 +20,15 @@ function compileServer() {
         async: true,
       });
     }
-
     serverStarted = true;
   });
 
-  serverCompiler.watch({}, () => {});
+  serverCompiler.watch(
+    {
+      ignored: /node_modules/,
+    },
+    () => {}
+  );
 }
 
 function compileClient() {
@@ -36,19 +40,17 @@ function compileClient() {
 
   const clientDevServer = new devServer(clientCompiler, {
     ...clientConfig.devServer,
-    onListening() {
-      console.clear();
-    },
   });
 
   clientCompiler.hooks.done.tap('AfterClientCompile', () => {
     if (!serverStarted) {
+      console.clear();
       compileServer();
     }
+  });
 
-    clientDevServer.listen(3001, (err) => {
-      console.log('dev serverError: ', err);
-    });
+  clientDevServer.listen(3001, (err) => {
+    console.log('dev serverError: ', err);
   });
 }
 
