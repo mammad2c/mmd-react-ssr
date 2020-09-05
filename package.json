@@ -111,7 +111,8 @@
   },
   "nodemonConfig": {
     "watch": [
-      "build/server.js"
+      "build/server.js",
+      "build/assets.json"
     ]
   },
   "jest": {

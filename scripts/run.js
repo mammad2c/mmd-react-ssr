@@ -3,6 +3,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
 const devServer = require('webpack-dev-server');
+const shell = require('shelljs');
 const configGenerator = require('../webpacks/configGenerator');
 
 let serverStarted = false;
@@ -14,6 +15,12 @@ function compileServer() {
   const serverCompiler = webpack(serverConfig);
 
   serverCompiler.hooks.done.tap('AfterServerCompile', () => {
+    if (!serverStarted) {
+      shell.exec('yarn start-dev-server', {
+        async: true,
+      });
+    }
+
     serverStarted = true;
   });
 

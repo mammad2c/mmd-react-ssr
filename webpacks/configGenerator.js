@@ -7,8 +7,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-const shell = require('shelljs');
-const chokidar = require('chokidar');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const internalIP = require('internal-ip');
@@ -25,7 +23,6 @@ const IP = internalIP.v4.sync();
 const configGenerator = (target) => {
   const isClient = target === 'client';
   const isProduction = process.env.NODE_ENV === 'production';
-  let firstBuildServer = false;
 
   let entry = ['./src/client.jsx'];
 
@@ -105,26 +102,7 @@ const configGenerator = (target) => {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1,
       }),
-      isProduction
-        ? []
-        : [
-            new webpack.HotModuleReplacementPlugin(),
-            new webpackUtils.WebpackAfterBuildPlugin(() => {
-              let watch;
-              if (!firstBuildServer) {
-                watch = chokidar.watch('./build/assets.json').on('add', () => {
-                  shell.exec('yarn start-dev-server', {
-                    async: true,
-                  });
-                  firstBuildServer = true;
-                });
-              }
-              if (firstBuildServer && watch) {
-                watch.close();
-                watch = undefined;
-              }
-            }),
-          ]
+      isProduction ? [] : [new webpack.HotModuleReplacementPlugin()]
     );
   }
 
