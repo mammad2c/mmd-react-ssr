@@ -4,11 +4,8 @@
   "main": "build/server.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn clean && cross-env NODE_ENV=development node ./scripts/run.js",
-    "start-dev-server": "cross-env NODE_ENV=development nodemon ./build/server.js",
-    "build": "yarn clean && cross-env NODE_ENV=production node ./scripts/build.js",
-    "clean": "rimraf -rf build",
-    "start-prod-server": "nodemon build/server.js",
+    "start": "node ./scripts/run.js",
+    "build": "node ./scripts/build.js",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch --passWithNoTests",
     "lint:js": "eslint --fix src/**/*.{js,jsx}",
@@ -40,6 +37,7 @@
     "babel-eslint": "10.1.0",
     "babel-jest": "26.3.0",
     "babel-loader": "8.1.0",
+    "chalk": "4.1.0",
     "chokidar": "3.4.2",
     "copy-webpack-plugin": "6.1.0",
     "cross-env": "7.0.2",
@@ -70,7 +68,6 @@
     "resolve-url-loader": "3.1.1",
     "rimraf": "3.0.2",
     "sass-loader": "10.0.2",
-    "shelljs": "0.8.4",
     "style-loader": "1.2.1",
     "stylelint": "13.7.0",
     "stylelint-config-recommended-scss": "4.2.0",
@@ -106,12 +103,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
-  },
-  "nodemonConfig": {
-    "watch": [
-      "build/server.js",
-      "build/assets.json"
     ]
   },
   "jest": {
