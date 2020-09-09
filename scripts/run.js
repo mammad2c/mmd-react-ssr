@@ -9,6 +9,8 @@ const chalk = require('chalk');
 const cleanBuild = require('./cleanBuild');
 const configGenerator = require('../webpacks/configGenerator');
 
+process.env.NODE_ENV = 'development';
+
 let serverStarted = false;
 
 function compileServer() {

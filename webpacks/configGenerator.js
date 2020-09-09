@@ -63,12 +63,15 @@ const configGenerator = (target) => {
 
   let plugins = [
     new webpack.NoEmitOnErrorsPlugin(),
-    new ReactRefreshWebpackPlugin(),
     new WebpackBar({
       name: isClient ? 'client' : 'server',
       color: isClient ? '#2196F3' : '#FFEB3B',
     }),
   ];
+
+  plugins = isProduction
+    ? plugins
+    : [...plugins, new ReactRefreshWebpackPlugin()];
 
   if (isClient) {
     plugins = plugins.concat(
@@ -166,9 +169,9 @@ const configGenerator = (target) => {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              plugins: [
-                !isProduction && require.resolve('react-refresh/babel'),
-              ].filter(Boolean),
+              plugins: isProduction
+                ? []
+                : [require.resolve('react-refresh/babel')].filter(Boolean),
             },
           },
         },
