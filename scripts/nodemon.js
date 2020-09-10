@@ -1,6 +1,5 @@
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
-const { green } = require('chalk');
 
 let firstStart = false;
 
