@@ -71,9 +71,7 @@ app.get('/*', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-  console.log('Your app ready at http://localhost:3000');
-});
+app.listen(3000, () => {});
 
 if (module.hot) {
   module.hot.accept();

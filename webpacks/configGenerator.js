@@ -10,7 +10,7 @@ const nodeExternals = require('webpack-node-externals');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const internalIP = require('internal-ip');
-const webpackUtils = require('./webpack.utils');
+const { WebpackErrors, terserPluginOptions } = require('./webpack.utils');
 
 const imageRegex = /\.(png|jpe?g|gif|bmp)$/;
 const fontRegex = /\.(woff|woff2|ttf|eot|svg|otf|webp)$/;
@@ -63,6 +63,7 @@ const configGenerator = (target) => {
 
   let plugins = [
     new webpack.NoEmitOnErrorsPlugin(),
+    new WebpackErrors(),
     new WebpackBar({
       name: isClient ? 'client' : 'server',
       color: isClient ? '#2196F3' : '#FFEB3B',
@@ -212,7 +213,6 @@ const configGenerator = (target) => {
                   loader: 'postcss-loader',
                   options: {
                     sourceMap: !isProduction,
-                    ident: 'postcss',
                   },
                 },
                 {
@@ -249,7 +249,6 @@ const configGenerator = (target) => {
                   loader: 'postcss-loader',
                   options: {
                     sourceMap: !isProduction,
-                    ident: 'postcss',
                   },
                 },
                 {
@@ -271,7 +270,7 @@ const configGenerator = (target) => {
           minimize: !!isProduction,
           minimizer: isProduction
             ? [
-                new TerserPlugin(webpackUtils.terserPluginOptions),
+                new TerserPlugin(terserPluginOptions),
                 new OptimizeCSSAssetsPlugin({
                   cssProcessorPluginOptions: {
                     preset: [
@@ -285,7 +284,7 @@ const configGenerator = (target) => {
         }
       : {
           minimizer: isProduction
-            ? [new TerserPlugin(webpackUtils.terserPluginOptions)]
+            ? [new TerserPlugin(terserPluginOptions)]
             : [],
         },
     node: isClient

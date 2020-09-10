@@ -1,5 +1,6 @@
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
+const { green } = require('chalk');
 
 let firstStart = false;
 
@@ -20,6 +21,10 @@ function spawnNodemon() {
 
   cp.on('message', (event) => {
     if (event.type === 'start' && !firstStart) {
+      console.log(
+        `Your app ready at ${chalk.green('http://localhost:3000')} \n`
+      );
+
       console.log(
         `You can type ${chalk.green('rs')} here to manually restart server \n`
       );

@@ -5,12 +5,24 @@ const configGenerator = require('../webpacks/configGenerator');
 
 process.env.NODE_ENV = 'production';
 
+let clientBuilt = false;
+let serverBuilt = false;
+
+function showBuildSuccess() {
+  if (clientBuilt && serverBuilt) {
+    console.log(chalk.greenBright('Compiled successfully'));
+  }
+}
+
 function compileServer() {
   const serverConfig = configGenerator('server');
 
   const serverCompiler = webpack(serverConfig);
 
-  serverCompiler.run(() => {});
+  serverCompiler.run(() => {
+    serverBuilt = true;
+    showBuildSuccess();
+  });
 }
 
 function compileClient() {
@@ -23,7 +35,10 @@ function compileClient() {
 
   const clientCompiler = webpack(clientConfig);
 
-  clientCompiler.run(() => {});
+  clientCompiler.run(() => {
+    clientBuilt = true;
+    showBuildSuccess();
+  });
 }
 
 compileClient();

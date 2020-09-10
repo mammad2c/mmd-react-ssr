@@ -1,24 +1,11 @@
 const webpack = require('webpack');
-const devServer = require('webpack-dev-server');
 const chalk = require('chalk');
 const nodemon = require('./nodemon');
 const cleanBuild = require('./cleanBuild');
+const { DevServer } = require('../webpacks/webpack.utils');
 const configGenerator = require('../webpacks/configGenerator');
 
 process.env.NODE_ENV = 'development';
-
-class noStatusDevServer extends devServer {
-  constructor(compiler, options = {}, _log) {
-    super(compiler, options, _log);
-    this.verbose = false;
-  }
-
-  showStatus() {
-    if (this.verbose) {
-      super.showStatus();
-    }
-  }
-}
 
 let serverStarted = false;
 
@@ -27,8 +14,14 @@ function compileServer() {
 
   const serverCompiler = webpack(serverConfig);
 
-  serverCompiler.hooks.done.tap('AfterServerCompile', () => {
+  serverCompiler.hooks.done.tap('ServerDone', (stats) => {
+    if (stats.hasErrors()) {
+      return;
+    }
+
     if (!serverStarted) {
+      console.log(`${chalk.greenBright('Compiled successfully')} \n`);
+
       const ndm = nodemon();
 
       process.stdin.on('data', (data) => {
@@ -59,13 +52,16 @@ function compileClient() {
 
   const clientCompiler = webpack(clientConfig);
 
-  const clientDevServer = new noStatusDevServer(clientCompiler, {
+  const clientDevServer = new DevServer(clientCompiler, {
     ...clientConfig.devServer,
   });
 
-  clientCompiler.hooks.done.tap('AfterClientCompile', () => {
+  clientCompiler.hooks.done.tap('ClientDone', (stats) => {
+    if (stats.hasErrors()) {
+      return;
+    }
+
     if (!serverStarted) {
-      console.clear();
       compileServer();
     }
   });

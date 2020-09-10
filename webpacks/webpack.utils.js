@@ -1,21 +1,33 @@
 /* eslint-disable max-classes-per-file */
-class WebpackAfterBuildPlugin {
-  constructor(callback) {
-    this.callback = callback;
+/* eslint-disable import/no-extraneous-dependencies */
+
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const devServer = require('webpack-dev-server');
+
+class WebpackErrors extends FriendlyErrorsWebpackPlugin {
+  constructor(options) {
+    super(options);
+    this.noSuccess = true;
+    this.shouldClearConsole = false;
   }
 
-  apply(compiler) {
-    compiler.hooks.done.tap('buildDone', this.callback);
+  displaySuccess() {
+    if (!this.noSuccess) {
+      super.displaySuccess();
+    }
   }
 }
 
-class WebpackBeforeBuildPlugin {
-  constructor(callback) {
-    this.callback = callback;
+class DevServer extends devServer {
+  constructor(compiler, options = {}, _log) {
+    super(compiler, options, _log);
+    this.verbose = false;
   }
 
-  apply(compiler) {
-    compiler.hooks.entryOption.tap('beforeBuild', this.callback);
+  showStatus() {
+    if (this.verbose) {
+      super.showStatus();
+    }
   }
 }
 
@@ -27,13 +39,11 @@ const terserPluginOptions = {
     compress: {
       ecma: 5,
       collapse_vars: false,
-      warnings: false,
       comparisons: false,
       computed_props: false,
       hoist_funs: false,
       hoist_props: false,
       hoist_vars: false,
-      inline: false,
       loops: false,
       negate_iife: false,
       properties: false,
@@ -64,11 +74,11 @@ const terserPluginOptions = {
   sourceMap: false,
   cache: true,
   parallel: true,
-  extractComments: false
+  extractComments: false,
 };
 
 module.exports = {
-  WebpackBeforeBuildPlugin,
-  WebpackAfterBuildPlugin,
-  terserPluginOptions
+  terserPluginOptions,
+  DevServer,
+  WebpackErrors,
 };
