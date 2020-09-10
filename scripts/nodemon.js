@@ -39,7 +39,7 @@ function spawnNodemon() {
       return;
     }
 
-    console.log(data.toString());
+    console.log(strData);
   });
 
   return cp;
