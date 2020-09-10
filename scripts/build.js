@@ -1,7 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable new-cap */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
 const chalk = require('chalk');
 const cleanBuild = require('./cleanBuild');

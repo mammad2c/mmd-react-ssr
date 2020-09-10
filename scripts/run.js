@@ -1,15 +1,24 @@
-/* eslint-disable no-console */
-/* eslint-disable new-cap */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
 const devServer = require('webpack-dev-server');
-const nodemon = require('nodemon');
 const chalk = require('chalk');
+const nodemon = require('./nodemon');
 const cleanBuild = require('./cleanBuild');
 const configGenerator = require('../webpacks/configGenerator');
 
 process.env.NODE_ENV = 'development';
+
+class noStatusDevServer extends devServer {
+  constructor(compiler, options = {}, _log) {
+    super(compiler, options, _log);
+    this.verbose = false;
+  }
+
+  showStatus() {
+    if (this.verbose) {
+      super.showStatus();
+    }
+  }
+}
 
 let serverStarted = false;
 
@@ -20,17 +29,15 @@ function compileServer() {
 
   serverCompiler.hooks.done.tap('AfterServerCompile', () => {
     if (!serverStarted) {
-      nodemon({
-        script: './build/server.js',
-        watch: ['./build/server.js', './build/assets.json'],
-      });
+      const ndm = nodemon();
 
-      nodemon.once('start', () => {
-        console.log(
-          `You can type ${chalk.green('rs')} here to manually restart server \n`
-        );
+      process.stdin.on('data', (data) => {
+        if (data.toString().trim() === 'rs') {
+          ndm.send('restart');
+        }
       });
     }
+
     serverStarted = true;
   });
 
@@ -44,7 +51,7 @@ function compileServer() {
 
 function compileClient() {
   console.clear();
-  console.log(chalk.greenBright('Start compiling... '));
+  console.log(`${chalk.greenBright('Start compiling... ')}`);
 
   cleanBuild();
 
@@ -52,7 +59,7 @@ function compileClient() {
 
   const clientCompiler = webpack(clientConfig);
 
-  const clientDevServer = new devServer(clientCompiler, {
+  const clientDevServer = new noStatusDevServer(clientCompiler, {
     ...clientConfig.devServer,
   });
 
@@ -63,7 +70,7 @@ function compileClient() {
     }
   });
 
-  clientDevServer.listen(3001, (err) => {
+  clientDevServer.listen(clientConfig.devServer.port, (err) => {
     console.log('dev serverError: ', err);
   });
 }
