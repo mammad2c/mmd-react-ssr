@@ -1,7 +1,7 @@
 const webpack = require('webpack');
-const chalk = require('chalk');
 const cleanBuild = require('./cleanBuild');
 const configGenerator = require('../webpacks/configGenerator');
+const messages = require('./messages');
 
 process.env.NODE_ENV = 'production';
 
@@ -10,7 +10,7 @@ let serverBuilt = false;
 
 function showBuildSuccess() {
   if (clientBuilt && serverBuilt) {
-    console.log(chalk.greenBright('Compiled successfully'));
+    messages.compileSuccessful();
   }
 }
 
@@ -27,7 +27,7 @@ function compileServer() {
 
 function compileClient() {
   console.clear();
-  console.log(chalk.greenBright('Start compiling... '));
+  messages.compileStart();
 
   cleanBuild();
 

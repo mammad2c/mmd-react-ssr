@@ -1,13 +1,16 @@
 const webpack = require('webpack');
-const chalk = require('chalk');
-const nodemon = require('./nodemon');
+const cluster = require('cluster');
 const cleanBuild = require('./cleanBuild');
+const ServerRunner = require('./ServerRunner');
 const { DevServer } = require('../webpacks/webpack.utils');
 const configGenerator = require('../webpacks/configGenerator');
+const messages = require('./messages');
 
 process.env.NODE_ENV = 'development';
 
 let serverStarted = false;
+
+const serverRunner = new ServerRunner();
 
 function compileServer() {
   const serverConfig = configGenerator('server');
@@ -20,15 +23,8 @@ function compileServer() {
     }
 
     if (!serverStarted) {
-      console.log(`${chalk.greenBright('Compiled successfully')} \n`);
-
-      const ndm = nodemon();
-
-      process.stdin.on('data', (data) => {
-        if (data.toString().trim() === 'rs') {
-          ndm.send('restart');
-        }
-      });
+      messages.compileSuccessful();
+      serverRunner.start();
     }
 
     serverStarted = true;
@@ -44,7 +40,7 @@ function compileServer() {
 
 function compileClient() {
   console.clear();
-  console.log(`${chalk.greenBright('Start compiling... ')}`);
+  messages.compileStart();
 
   cleanBuild();
 
@@ -63,12 +59,16 @@ function compileClient() {
 
     if (!serverStarted) {
       compileServer();
+    } else {
+      serverRunner.restart();
     }
   });
 
   clientDevServer.listen(clientConfig.devServer.port, (err) => {
-    console.log('dev serverError: ', err);
+    console.log('clientDevServer err: ', err.message);
   });
 }
 
-compileClient();
+if (cluster.isMaster) {
+  compileClient();
+}
