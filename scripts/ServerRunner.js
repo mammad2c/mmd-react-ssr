@@ -7,8 +7,6 @@ class ServerRunner {
 
   serverPath = path.resolve('build/server.js');
 
-  assetsPath = path.resolve('build/assets.json');
-
   firstRun = false;
 
   constructor() {
