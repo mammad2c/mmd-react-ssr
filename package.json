@@ -78,12 +78,8 @@
     "webpackbar": "4.0.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "yarn lint:js"
-    ],
-    "src/**/*.{css,scss,less,sass}": [
-      "yarn lint:styles"
-    ]
+    "*.{js,jsx}": "eslint --fix",
+    "*.{css,scss,less,sass}": "stylelint --fix"
   },
   "husky": {
     "hooks": {

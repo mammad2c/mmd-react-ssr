@@ -11,11 +11,6 @@ import serialize from 'serialize-javascript';
 import App from './App';
 import routes from './routes';
 
-// eslint-disable-next-line import/no-unresolved
-const assets = path.resolve('./build/assets.json');
-
-const extractor = new ChunkExtractor({ statsFile: assets });
-
 /**
  * @param {object} data initial data resolved by getInitialData in components
  * @param {ExpressRequest} req Express js request object
@@ -23,6 +18,10 @@ const extractor = new ChunkExtractor({ statsFile: assets });
  * @param {object} preloadedState preloaded state or other configuration, example usage: redux
  */
 const render = (data, req, res, preloadedState = {}) => {
+  const extractor = new ChunkExtractor({
+    statsFile: path.resolve('./build/assets.json'),
+  });
+
   const context = {};
 
   const jsx = extractor.collectChunks(
@@ -56,6 +55,7 @@ const render = (data, req, res, preloadedState = {}) => {
               ${helmet.link.toString()}
               ${extractor.getLinkTags()}
               ${extractor.getStyleTags()}
+              <title>leila sds sdsd sdsd sd</title>
             </head>
             <body ${helmet.bodyAttributes.toString()}>
               <div id="app">${html}</div>
