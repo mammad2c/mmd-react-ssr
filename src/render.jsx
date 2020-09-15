@@ -55,7 +55,6 @@ const render = (data, req, res, preloadedState = {}) => {
               ${helmet.link.toString()}
               ${extractor.getLinkTags()}
               ${extractor.getStyleTags()}
-              <title>leila sds sdsd sdsd sd</title>
             </head>
             <body ${helmet.bodyAttributes.toString()}>
               <div id="app">${html}</div>

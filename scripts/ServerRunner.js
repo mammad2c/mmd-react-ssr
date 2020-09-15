@@ -1,9 +1,12 @@
 const cluster = require('cluster');
 const path = require('path');
+const chokidar = require('chokidar');
 const messages = require('./messages');
 
 class ServerRunner {
   worker = null;
+
+  watcher;
 
   serverPath = path.resolve('build/server.js');
 
@@ -40,6 +43,10 @@ class ServerRunner {
       this.firstRun = true;
     }
 
+    if (!this.watcher) {
+      this.watchForChanges();
+    }
+
     if (typeof cb === 'function') {
       cb();
     }
@@ -59,6 +66,22 @@ class ServerRunner {
     if (typeof cb === 'function') {
       cb();
     }
+  };
+
+  watchForChanges = () => {
+    this.watcher = chokidar.watch(this.serverPath);
+
+    this.watcher.on('ready', () => {
+      this.watcher.on('all', () => {
+        Object.keys(require.cache).forEach((id) => {
+          if (/[\\/\\]server[\\/\\]/.test(id)) {
+            delete require.cache[id];
+          }
+        });
+
+        this.restart();
+      });
+    });
   };
 }
 

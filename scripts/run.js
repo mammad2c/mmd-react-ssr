@@ -10,26 +10,6 @@ process.env.NODE_ENV = 'development';
 
 let serverStarted = false;
 
-const serverRunner = new ServerRunner();
-
-const compiling = new Proxy(
-  {
-    client: [],
-  },
-  {
-    set: (target, prop, value) => {
-      if (value.includes('done')) {
-        serverRunner.restart();
-      }
-
-      // eslint-disable-next-line no-param-reassign
-      target[prop] = value;
-
-      return true;
-    },
-  }
-);
-
 function compileServer() {
   const serverConfig = configGenerator('server');
 
@@ -42,9 +22,8 @@ function compileServer() {
 
     if (!serverStarted) {
       messages.compileSuccessful();
+      const serverRunner = new ServerRunner();
       serverRunner.start();
-    } else if (!compiling.client.includes('start')) {
-      serverRunner.restart();
     }
 
     serverStarted = true;
@@ -72,12 +51,6 @@ function compileClient() {
     ...clientConfig.devServer,
   });
 
-  clientCompiler.hooks.beforeCompile.tap('ClientBeforeCompile', () => {
-    if (serverStarted) {
-      compiling.client = ['start'];
-    }
-  });
-
   clientCompiler.hooks.done.tap('ClientDone', (stats) => {
     if (stats.hasErrors()) {
       return;
@@ -85,10 +58,6 @@ function compileClient() {
 
     if (!serverStarted) {
       compileServer();
-    } else if (compiling.client.includes('start')) {
-      compiling.client = ['done'];
-    } else {
-      compiling.client = [...compiling.client, 'done'];
     }
   });
 
