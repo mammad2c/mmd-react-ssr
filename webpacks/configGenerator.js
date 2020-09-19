@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const StartServerPlugin = require('start-server-webpack-plugin');
 const path = require('path');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -30,12 +30,15 @@ const configGenerator = (target) => {
     entry = isProduction
       ? entry
       : [
+          'react-hot-loader/patch',
           `webpack-dev-server/client?http://${IP}:3001`,
           'webpack/hot/only-dev-server',
           ...entry,
         ];
   } else {
-    entry = ['./src/server.js'];
+    entry = isProduction
+      ? ['./src/index.js']
+      : ['webpack/hot/poll?300', './src/index.js'];
   }
 
   let output = {};
@@ -70,9 +73,7 @@ const configGenerator = (target) => {
     }),
   ];
 
-  plugins = isProduction
-    ? plugins
-    : [...plugins, new ReactRefreshWebpackPlugin()];
+  plugins = isProduction ? plugins : [...plugins];
 
   if (isClient) {
     plugins = plugins.concat(
@@ -109,7 +110,12 @@ const configGenerator = (target) => {
               maxChunks: 1,
             }),
           ]
-        : [new webpack.HotModuleReplacementPlugin()]
+        : [
+            new StartServerPlugin({
+              name: 'server.js',
+            }),
+            new webpack.HotModuleReplacementPlugin(),
+          ]
     );
   }
 
@@ -170,9 +176,6 @@ const configGenerator = (target) => {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              plugins: isProduction
-                ? []
-                : [require.resolve('react-refresh/babel')].filter(Boolean),
             },
           },
         },
@@ -299,6 +302,7 @@ const configGenerator = (target) => {
       extensions: ['.jsx', '.js'],
       alias: {
         'webpack/hot/poll': require.resolve('webpack/hot/poll'),
+        'react-dom': '@hot-loader/react-dom',
       },
       modules: [path.join(__dirname, '../src'), 'node_modules'],
     },

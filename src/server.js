@@ -71,8 +71,4 @@ app.get('/*', (req, res) => {
     });
 });
 
-app.listen(3000, () => {});
-
-if (module.hot) {
-  module.hot.accept();
-}
+export default app;

@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const cluster = require('cluster');
 const cleanBuild = require('./cleanBuild');
-const ServerRunner = require('./ServerRunner');
 const { DevServer } = require('../webpacks/webpack.utils');
 const configGenerator = require('../webpacks/configGenerator');
 const messages = require('./messages');
@@ -10,33 +9,6 @@ process.env.NODE_ENV = 'development';
 
 let serverStarted = false;
 
-function compileServer() {
-  const serverConfig = configGenerator('server');
-
-  const serverCompiler = webpack(serverConfig);
-
-  serverCompiler.hooks.done.tap('ServerDone', (stats) => {
-    if (stats.hasErrors()) {
-      return;
-    }
-
-    if (!serverStarted) {
-      messages.compileSuccessful();
-      const serverRunner = new ServerRunner();
-      serverRunner.start();
-    }
-
-    serverStarted = true;
-  });
-
-  serverCompiler.watch(
-    {
-      ignored: /node_modules/,
-    },
-    () => {}
-  );
-}
-
 function compileClient() {
   console.clear();
   messages.compileStart();
@@ -44,20 +16,38 @@ function compileClient() {
   cleanBuild();
 
   const clientConfig = configGenerator('client');
+  const serverConfig = configGenerator('server');
 
   const clientCompiler = webpack(clientConfig);
+  const serverCompiler = webpack(serverConfig);
 
-  const clientDevServer = new DevServer(clientCompiler, {
-    ...clientConfig.devServer,
-  });
+  const clientDevServer = new DevServer(clientCompiler, clientConfig.devServer);
 
-  clientCompiler.hooks.done.tap('ClientDone', (stats) => {
-    if (stats.hasErrors()) {
+  clientCompiler.hooks.done.tap('ClientDone', (clientStats) => {
+    if (clientStats.hasErrors()) {
       return;
     }
 
     if (!serverStarted) {
-      compileServer();
+      serverCompiler.hooks.done.tap('ServerDone', (serverStats) => {
+        if (serverStats.hasErrors()) {
+          return;
+        }
+
+        if (!serverStarted) {
+          messages.compileSuccessful();
+          messages.typeRs();
+        }
+
+        serverStarted = true;
+      });
+
+      serverCompiler.watch(
+        {
+          ignored: /node_modules/,
+        },
+        () => {}
+      );
     }
   });
 

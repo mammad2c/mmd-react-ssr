@@ -11,6 +11,5 @@ module.exports = {
     console.log(
       `You can type ${chalk.green('rs')} here to manually restart server \n`
     ),
-  serverRestarted: () =>
-    console.log(chalk.cyan('\n ---- Server restarted ---- \n')),
+  hotReloading: () => console.log(chalk.greenBright('hot reloading server')),
 };
