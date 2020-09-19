@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const cluster = require('cluster');
 const cleanBuild = require('./cleanBuild');
 const { DevServer } = require('../webpacks/webpack.utils');
 const configGenerator = require('../webpacks/configGenerator');
@@ -9,7 +8,7 @@ process.env.NODE_ENV = 'development';
 
 let serverStarted = false;
 
-function compileClient() {
+function compile() {
   console.clear();
   messages.compileStart();
 
@@ -56,6 +55,4 @@ function compileClient() {
   });
 }
 
-if (cluster.isMaster) {
-  compileClient();
-}
+compile();
