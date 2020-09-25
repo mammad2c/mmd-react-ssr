@@ -23,12 +23,20 @@ function compile() {
   const clientDevServer = new DevServer(clientCompiler, clientConfig.devServer);
 
   clientCompiler.hooks.done.tap('ClientDone', (clientStats) => {
+    if (serverStarted) {
+      return;
+    }
+
     if (clientStats.hasErrors()) {
       return;
     }
 
     if (!serverStarted) {
       serverCompiler.hooks.done.tap('ServerDone', (serverStats) => {
+        if (serverStarted) {
+          return;
+        }
+
         if (serverStats.hasErrors()) {
           return;
         }
