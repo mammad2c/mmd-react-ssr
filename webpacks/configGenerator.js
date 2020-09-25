@@ -65,7 +65,6 @@ const configGenerator = (target) => {
   }
 
   let plugins = [
-    new webpack.NoEmitOnErrorsPlugin(),
     new WebpackErrors(),
     new WebpackBar({
       name: isClient ? 'client' : 'server',
@@ -77,7 +76,6 @@ const configGenerator = (target) => {
 
   if (isClient) {
     plugins = plugins.concat(
-      new webpack.NamedModulesPlugin(),
       new LoadablePlugin({
         filename: 'assets.json',
         writeToDisk: true,
