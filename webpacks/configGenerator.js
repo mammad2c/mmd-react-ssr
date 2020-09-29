@@ -298,10 +298,12 @@ const configGenerator = (target) => {
         },
     resolve: {
       extensions: ['.jsx', '.js'],
-      alias: {
-        'webpack/hot/poll': require.resolve('webpack/hot/poll'),
-        'react-dom': '@hot-loader/react-dom',
-      },
+      alias: isProduction
+        ? undefined
+        : {
+            'webpack/hot/poll': require.resolve('webpack/hot/poll'),
+            'react-dom': '@hot-loader/react-dom',
+          },
       modules: [path.join(__dirname, '../src'), 'node_modules'],
     },
     plugins,
