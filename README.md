@@ -29,15 +29,17 @@ A React Server Side rendered application template (isomorphic) with support fetc
 - `NodeJs` v10 above
 - `yarn`
 
+**Note**: this project relay on `yarn` and `node_modules` will relay on that. it will throw error if you use `npm` to run commands.
+
 ## How to use
 
 1- git clone this project.
 
 2- remove `.git` folder.
 
-3- `yarn install` || `npm install`
+3- `yarn install`
 
-4- `yarn start` || `npm run start`
+4- `yarn start`
 
 now start coding !!
 
@@ -45,7 +47,7 @@ you can see in `http://localhost:3000`.
 
 ## Production and Deployment
 
-1- Run `yarn build` or `npm run build`. a `build` folder will be created that ready for deployment.
+1- Run `yarn build`. a `build` folder will be created that ready for deployment.
 
 2- Now serve the `build` folder with `NodeJs`.
 
@@ -143,7 +145,7 @@ Inside `asyncComponent` we use a simple `loading ...` message until component lo
 
 3- write tests.
 
-4- enter `yarn test` || `npm run test` for run tests, or `yarn test:watch` || `npm run test:watch` to run in watch mode.
+4- enter `yarn test` for run tests, or `yarn test:watch` to run in watch mode.
 
 note: you can create test file without `__tests__` folder but for better file structure keep it in `__tests__`.
 
