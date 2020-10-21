@@ -11,6 +11,11 @@
     "lint:js": "eslint --fix src/**/*.{js,jsx}",
     "lint:styles": "stylelint --fix src/**/*.{css,scss,less,sass}"
   },
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.22.x",
+    "node": ">= 10.x.x"
+  },
   "dependencies": {
     "@loadable/component": "5.13.2",
     "@loadable/server": "5.13.2",
@@ -34,6 +39,7 @@
     "@loadable/babel-plugin": "5.13.2",
     "@loadable/webpack-plugin": "5.13.0",
     "@testing-library/react": "11.0.4",
+    "@types/jest": "^26.0.15",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.5.2",
     "babel-loader": "8.1.0",
