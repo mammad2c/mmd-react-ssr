@@ -5,6 +5,7 @@ module.exports = {
     console.log(`${chalk.greenBright('Start compiling... ')}`),
   compileSuccessful: () =>
     console.log(`${chalk.greenBright('Compiled successfully')} \n`),
+  compileError: () => console.log(`${chalk.red('Error on compile')} \n`),
   serverFirstStart: () =>
     console.log(`Your app ready at ${chalk.green('http://localhost:3000')} \n`),
   typeRs: () =>

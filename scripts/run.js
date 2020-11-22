@@ -28,6 +28,7 @@ function compile() {
     }
 
     if (clientStats.hasErrors()) {
+      messages.compileError();
       return;
     }
 
@@ -38,6 +39,7 @@ function compile() {
         }
 
         if (serverStats.hasErrors()) {
+          messages.compileError();
           return;
         }
 
