@@ -32,32 +32,30 @@ function compile() {
       return;
     }
 
-    if (!serverStarted) {
-      serverCompiler.hooks.done.tap('ServerDone', (serverStats) => {
-        if (serverStarted) {
-          return;
-        }
+    serverCompiler.hooks.done.tap('ServerDone', (serverStats) => {
+      if (serverStarted) {
+        return;
+      }
 
-        if (serverStats.hasErrors()) {
-          messages.compileError();
-          return;
-        }
+      if (serverStats.hasErrors()) {
+        messages.compileError();
+        return;
+      }
 
-        if (!serverStarted) {
-          messages.compileSuccessful();
-          messages.typeRs();
-        }
+      if (!serverStarted) {
+        messages.compileSuccessful();
+        messages.typeRs();
+      }
 
-        serverStarted = true;
-      });
+      serverStarted = true;
+    });
 
-      serverCompiler.watch(
-        {
-          ignored: /node_modules/,
-        },
-        () => {}
-      );
-    }
+    serverCompiler.watch(
+      {
+        ignored: /node_modules/,
+      },
+      () => {}
+    );
   });
 
   clientDevServer.listen(clientConfig.devServer.port, (err) => {
