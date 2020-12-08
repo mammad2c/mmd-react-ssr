@@ -1,4 +1,3 @@
-import React from 'react';
 import HttpStatus from './HttpStatus';
 
 function NotFound() {

@@ -7,6 +7,14 @@ const plugins = [
 ];
 
 module.exports = {
-  presets: ['@babel/preset-env', '@babel/preset-react'],
+  presets: [
+    '@babel/preset-env',
+    [
+      '@babel/preset-react',
+      {
+        runtime: 'automatic',
+      },
+    ],
+  ],
   plugins: isProduction ? plugins : ['react-hot-loader/babel', ...plugins],
 };

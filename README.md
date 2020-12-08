@@ -4,6 +4,8 @@ A React Server Side rendered application template (isomorphic) with support fetc
 
 ![demo](demo.gif)
 
+**Note**: Updated project for using `react@17` 🔥
+
 🔥 Using React Router.
 
 🔥 Support React Hot Reloading
