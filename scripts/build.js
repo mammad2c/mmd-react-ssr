@@ -19,10 +19,14 @@ function compileServer() {
 
   const serverCompiler = webpack(serverConfig);
 
-  serverCompiler.run((err, stats) => {
-    if (stats.hasErrors()) {
-      messages.compileError();
-      return;
+  serverCompiler.run((err) => {
+    if (err) {
+      messages.compileError(err.message);
+      if (err.stack) {
+        console.log(err.stack);
+      }
+      process.exitCode(1);
+      throw new Error(err.message);
     }
 
     serverBuilt = true;
@@ -40,10 +44,13 @@ function compileClient() {
 
   const clientCompiler = webpack(clientConfig);
 
-  clientCompiler.run((err, stats) => {
-    if (stats.hasErrors()) {
-      messages.compileError();
-      return;
+  clientCompiler.run((err) => {
+    if (err) {
+      messages.compileError(err.message);
+      if (err.stack) {
+        console.log(err.stack);
+      }
+      throw new Error(err.message);
     }
 
     clientBuilt = true;
