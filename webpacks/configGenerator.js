@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const StartServerPlugin = require('start-server-webpack-plugin');
+const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
 const path = require('path');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -50,10 +50,9 @@ const configGenerator = (target) => {
         isProduction ? 'bundle.[chunkhash:8].js' : 'bundle.js'
       }`,
       chunkFilename: `static/js/${
-        isProduction ? '[id].[chunkhash:8].chunk.js' : '[id].chunk.js'
+        isProduction ? '[id].[chunkhash].chunk.js' : '[id].chunk.js'
       }`,
       publicPath: isProduction ? '/' : `http://${IP}:3001/`,
-      libraryTarget: 'var',
     };
   } else {
     output = {
@@ -91,7 +90,6 @@ const configGenerator = (target) => {
             new MiniCssExtractPlugin({
               filename: 'static/css/[name].[contenthash:8].css',
               chunkFilename: 'static/css/[id].[contenthash:8].chunk.css',
-              allChunks: true,
             }),
           ]
         : [
@@ -109,7 +107,7 @@ const configGenerator = (target) => {
             }),
           ]
         : [
-            new StartServerPlugin({
+            new RunScriptWebpackPlugin({
               name: 'server.js',
             }),
             new webpack.HotModuleReplacementPlugin(),
@@ -149,7 +147,7 @@ const configGenerator = (target) => {
     target: isClient ? 'web' : 'node',
     entry,
     output,
-    devtool: isProduction ? false : 'cheap-module-eval-source-map',
+    devtool: isProduction ? false : 'eval-cheap-module-source-map',
     externals: isClient
       ? undefined
       : [
@@ -288,14 +286,9 @@ const configGenerator = (target) => {
             ? [new TerserPlugin(terserPluginOptions)]
             : [],
         },
-    node: isClient
-      ? {
-          fs: 'empty',
-          net: 'empty',
-        }
-      : {
-          __dirname: false,
-        },
+    node: !isClient && {
+      __dirname: false,
+    },
     resolve: {
       extensions: ['.jsx', '.js'],
       alias: isProduction

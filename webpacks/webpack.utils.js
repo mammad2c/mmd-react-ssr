@@ -71,8 +71,6 @@ const terserPluginOptions = {
       ascii_only: true,
     },
   },
-  sourceMap: false,
-  cache: true,
   parallel: true,
   extractComments: false,
 };
