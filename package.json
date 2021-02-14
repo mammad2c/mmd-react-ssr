@@ -10,7 +10,7 @@
     "test:watch": "jest --watch --passWithNoTests",
     "lint:js": "eslint --fix src/**/*.{js,jsx}",
     "lint:styles": "stylelint --fix src/**/*.{css,scss,less,sass}",
-    "format": "prettier --fix *.{js,jsx,css,scss,less,sass,json,.md}",
+    "format": "prettier --write *.{js,jsx,css,scss,less,sass,json,.md}",
     "postinstall": "husky install",
     "lint-staged": "lint-staged"
   },
@@ -74,6 +74,7 @@
     "react-test-renderer": "17.0.1",
     "resolve-url-loader": "3.1.2",
     "rimraf": "3.0.2",
+    "sass": "^1.32.7",
     "sass-loader": "11.0.1",
     "start-server-webpack-plugin": "2.2.5",
     "style-loader": "2.0.0",
@@ -90,7 +91,7 @@
   "lint-staged": {
     "*.{js,jsx}": "eslint --fix",
     "*.{css,scss,less,sass}": "stylelint --fix",
-    "*.{js,jsx,css,scss,less,sass,json,.md}": "prettier --fix"
+    "*.{js,jsx,css,scss,less,sass,json,.md}": "prettier --write"
   },
   "husky": {
     "hooks": {
