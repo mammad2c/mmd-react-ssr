@@ -149,7 +149,7 @@ const configGenerator = (target) => {
     target: isClient ? 'web' : 'node',
     entry,
     output,
-    devtool: isProduction ? false : 'cheap-module-eval-source-map',
+    devtool: isProduction ? false : 'eval-cheap-module-source-map',
     externals: isClient
       ? undefined
       : [
@@ -288,14 +288,9 @@ const configGenerator = (target) => {
             ? [new TerserPlugin(terserPluginOptions)]
             : [],
         },
-    node: isClient
-      ? {
-          fs: 'empty',
-          net: 'empty',
-        }
-      : {
-          __dirname: false,
-        },
+    node: !isClient && {
+      __dirname: false,
+    },
     resolve: {
       extensions: ['.jsx', '.js'],
       alias: isProduction
