@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const StartServerPlugin = require('start-server-webpack-plugin');
+const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
 const path = require('path');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -50,10 +50,9 @@ const configGenerator = (target) => {
         isProduction ? 'bundle.[chunkhash:8].js' : 'bundle.js'
       }`,
       chunkFilename: `static/js/${
-        isProduction ? '[id].[chunkhash:8].chunk.js' : '[id].chunk.js'
+        isProduction ? '[id].[chunkhash].chunk.js' : '[id].chunk.js'
       }`,
       publicPath: isProduction ? '/' : `http://${IP}:3001/`,
-      libraryTarget: 'var',
     };
   } else {
     output = {
@@ -109,7 +108,7 @@ const configGenerator = (target) => {
             }),
           ]
         : [
-            new StartServerPlugin({
+            new RunScriptWebpackPlugin({
               name: 'server.js',
             }),
             new webpack.HotModuleReplacementPlugin(),
