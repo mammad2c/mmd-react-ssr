@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+const RazzleStartServerWebpackPlugin = require('razzle-start-server-webpack-plugin');
 const path = require('path');
 const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -107,8 +107,9 @@ const configGenerator = (target) => {
             }),
           ]
         : [
-            new RunScriptWebpackPlugin({
+            new RazzleStartServerWebpackPlugin({
               name: 'server.js',
+              keyboard: true,
             }),
             new webpack.HotModuleReplacementPlugin(),
           ]

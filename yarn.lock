@@ -8053,6 +8053,11 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+razzle-start-server-webpack-plugin@^4.0.0-canary.47:
+  version "4.0.0-canary.47"
+  resolved "https://registry.yarnpkg.com/razzle-start-server-webpack-plugin/-/razzle-start-server-webpack-plugin-4.0.0-canary.47.tgz#2bcd9f83dbf731d39fd0f02b0e804b704dc00410"
+  integrity sha512-G6L41nsTofYj73ZKCC9WyFkogHBMyYqcKEuFp1wNsVYFB36OViw2R6yBf7POy2WzyPt0yhdBTiRYqz5hwGOHkQ==
+
 react-dom@17.0.1:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.1.tgz#1de2560474ec9f0e334285662ede52dbc5426fc6"
@@ -8559,11 +8564,6 @@ run-parallel@^1.1.9:
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.1.10.tgz#60a51b2ae836636c81377df16cb107351bcd13ef"
   integrity sha512-zb/1OuZ6flOlH6tQyMPUrE3x3Ulxjlo9WIVXR4yVYi4H9UXQaeIsPbLn2R3O3vQCnDKkAl2qHiuocKKX4Tz/Sw==
-
-run-script-webpack-plugin@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/run-script-webpack-plugin/-/run-script-webpack-plugin-0.0.8.tgz#63b695e8ed4d5f7bd61fa3508e50c0135338a130"
-  integrity sha512-dzTVaDKWf4XJNlvTrQD2haT7a0zsp+RcCs9jsYiiqGRkBrtwds39mN7A0aSeilfEtt3t8DxtoUXyh76x1mq3MQ==
 
 rxjs@^6.6.3:
   version "6.6.3"
