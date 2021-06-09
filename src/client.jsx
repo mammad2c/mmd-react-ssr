@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter, matchPath } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';

@@ -4,7 +4,7 @@
 import http from 'http';
 import messages from '../scripts/messages';
 
-let app = require('./server.js').default;
+let app = require('./server').default;
 
 const server = http.createServer(app);
 
@@ -23,7 +23,7 @@ if (module.hot) {
     messages.hotReloading();
 
     try {
-      app = require('./server.js').default;
+      app = require('./server').default;
       server.removeListener('request', currentApp);
       server.on('request', app);
       currentApp = app;
